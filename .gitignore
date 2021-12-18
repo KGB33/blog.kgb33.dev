@@ -1,4 +1,8 @@
-# Hugo 
+# Hugo
 public/
 *.lock
 _gen/
+hugo_stats.json
+
+# Node
+node_modules/

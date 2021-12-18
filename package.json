@@ -1,0 +1,70 @@
+{
+  "comments": {
+    "dependencies": {
+      "@tabler/icons": "gruvbox",
+      "flexsearch": "gruvbox",
+      "normalize.css": "gruvbox",
+      "prism-themes": "gruvbox",
+      "prismjs": "gruvbox",
+      "simple-icons": "github.com/schnerring/hugo-mod-github-readme-stats",
+      "typeface-fira-code": "gruvbox",
+      "typeface-roboto-slab": "gruvbox"
+    },
+    "devDependencies": {
+      "@fullhuman/postcss-purgecss": "gruvbox",
+      "cssnano": "gruvbox",
+      "eslint": "gruvbox",
+      "eslint-config-prettier": "gruvbox",
+      "eslint-plugin-prettier": "gruvbox",
+      "husky": "github.com/schnerring/hugo-mod-github-readme-stats",
+      "lint-staged": "github.com/schnerring/hugo-mod-github-readme-stats",
+      "markdownlint-cli": "github.com/schnerring/hugo-mod-github-readme-stats",
+      "postcss": "gruvbox",
+      "postcss-cli": "gruvbox",
+      "postcss-custom-media": "gruvbox",
+      "postcss-import": "gruvbox",
+      "postcss-nesting": "gruvbox",
+      "postcss-preset-env": "gruvbox",
+      "postcss-url": "gruvbox",
+      "prettier": "github.com/schnerring/hugo-mod-github-readme-stats",
+      "prettier-plugin-go-template": "github.com/schnerring/hugo-mod-github-readme-stats",
+      "stylelint": "gruvbox",
+      "stylelint-config-prettier": "gruvbox",
+      "stylelint-prettier": "gruvbox"
+    }
+  },
+  "dependencies": {
+    "@tabler/icons": "^1.46.0",
+    "flexsearch": "^0.7.21",
+    "normalize.css": "^8.0.1",
+    "prism-themes": "^1.9.0",
+    "prismjs": "^1.25.0",
+    "simple-icons": "^6.0.0",
+    "typeface-fira-code": "^1.1.13",
+    "typeface-roboto-slab": "^1.1.13"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^4.1.3",
+    "cssnano": "^5.0.12",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.2",
+    "markdownlint-cli": "^0.30.0",
+    "postcss": "^8.4.4",
+    "postcss-cli": "^9.0.2",
+    "postcss-custom-media": "^8.0.0",
+    "postcss-import": "^14.0.2",
+    "postcss-nesting": "^10.0.2",
+    "postcss-preset-env": "^7.0.1",
+    "postcss-url": "^10.1.3",
+    "prettier": "^2.5.0",
+    "prettier-plugin-go-template": "0.0.11",
+    "stylelint": "^14.1.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-prettier": "^2.0.0"
+  },
+  "name": "blog.kgb33.dev",
+  "version": "0.1.0"
+}
