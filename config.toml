@@ -1,6 +1,6 @@
 baseURL = 'https://blog.kgb33.dev'
 languageCode = 'en-us'
-title = "I'll probably forget to change this later."
+title = ""
 theme = "m10c"
 
 [params]
@@ -12,4 +12,10 @@ theme = "m10c"
   name = "Github"
   url = "https://github.com/KGB33"
 
-
+# Gruvbox Green Colors
+[params.style]
+  darkestColor = "#1d2021"
+  darkColor = "#282828"
+  lightColor = "#a89984"
+  lightestColor = "#ebdbb2"
+  primaryColor = "#98971a"
