@@ -1,0 +1,15 @@
+baseURL = 'https://blog.kgb33.dev'
+languageCode = 'en-us'
+title = "I'll probably forget to change this later."
+theme = "m10c"
+
+[params]
+	avatar = "/images/avatar.jpg"
+	author = "Kelton Bassingthwaite"
+
+[[params.social]]
+  icon = "github"
+  name = "Github"
+  url = "https://github.com/KGB33"
+
+
