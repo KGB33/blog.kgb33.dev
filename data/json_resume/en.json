@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Kelton Bassingthwaite",
+    "image": "https://avatars.githubusercontent.com/u/17833726?v=4",
+    "email": "KeltonBassingthwaite@gmail.com",
+    "url": "https://blog.kgb33.dev",
+    "profiles": [{
+      "network": "Github",
+      "username": "KGB33",
+      "url": "https://github.com/KGB33"
+    }]
+  }
+}
