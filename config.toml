@@ -4,8 +4,9 @@ title = ""
 theme = "m10c"
 
 [params]
-	avatar = "/images/avatar.jpg"
-	author = "Kelton Bassingthwaite"
+  avatar = "/images/avatar.jpg"
+  author = "Kelton Bassingthwaite"
+  description = "Change config.toml -> [params] -> description to update this"
 
 [[params.social]]
   icon = "github"
