@@ -1,1 +1,1 @@
-{ "ignorePatterns": [{ "pattern": "^http://example.net" }] }
+{ "ignorePatterns": [{ "pattern": "^https?://localhost*" }] }
