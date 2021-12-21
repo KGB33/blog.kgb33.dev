@@ -282,11 +282,14 @@ Where `mlc_config.json` contains:
 }
 ```
 
-Once the
+Once the above two files are committed and pushed to Github, navigate to
+the Actions tab, click "Check Markdown Links" in the left column, then hit
+the "Run workflow" drop down menu. The action will also run automatically at
+midnight every Sunday and Github will send you an email if it fails.
 
 ### Auto Deployment from `main`
 
-### ACME/Lets Encrypt Auto-certs via cloudflare DNS
+### ACME/Lets Encrypt Auto-certs via Cloudflare DNS
 
 ## Resources
 
