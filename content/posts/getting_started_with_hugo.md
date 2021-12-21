@@ -208,11 +208,81 @@ including populating the sidebar. To personalize the theme create a new file `da
 
 # CI/CD
 
-### Pre-commit
+## Pre-commit
 
-- Spell check
-- markdown auto-format (esp. line-length)
-- Check for dead links
+[`pre-commit`][pre-commit] is an awesome python cli tool
+to manage git hooks. I recommend installing it via
+[`pipx`][pipx]: `pipx install pre-commit`.
+
+Then, create a new file `.pre-commit-config.yaml`.
+
+```yaml
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-toml
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.5.1
+    hooks:
+      - id: prettier
+```
+
+Install the hooks to run on every (local) git commit via `pre-commit install`
+Then, to immediately run the hooks on all files use `pre-commit run --all-files`.
+To force a commit when the hooks fail use `git commit --no-verify`
+
+## Github Actions
+
+If `pre-commit` is for local hooks, Github actions is for remote hooks.
+Each action is defined by a file `.github/workflows/<hook-name>.yaml`.
+Checkout <https://docs.github.com/en/actions/quickstart> for more info.
+
+### Check Dead Links
+
+[gaurav-nelson/github-action-markdown-link-check][actions-md-link] is exactly what it sounds like.
+Too add it create a new file, `.github/workflows/md-link-check.yaml` with the following content.
+
+```yaml
+name: Check Markdown links
+
+on:
+  workflow_dispatch:
+  schedule:
+  # Run every Sunday at midnight
+  - cron: "0 0 * * 0"
+
+jobs:
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: gaurav-nelson/github-action-markdown-link-check@v1
+      with:
+        use-quiet-mode: 'yes'
+        use-verbose-mode: 'yes'
+		config-file: 'mlc_config.json'
+```
+
+Where `mlc_config.json` contains:
+
+```json
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https?://localhost*"
+    }
+  ]
+}
+```
+
+Once the
 
 ### Auto Deployment from `main`
 
@@ -227,3 +297,6 @@ including populating the sidebar. To personalize the theme create a new file `da
 [theme]: https://github.com/schnerring/hugo-theme-gruvbox
 [theme-json-resume]: https://github.com/schnerring/hugo-mod-json-resume
 [json-resume]: https://jsonresume.org/
+[pre-commit]: https://pre-commit.com/
+[pipx]: https://pypa.github.io/pipx/
+[actions-md-link]: https://github.com/gaurav-nelson/github-action-markdown-link-check
