@@ -8,6 +8,25 @@ This post will mostly mirror Hugo's [quickstart guide][hugo-qs]. With a few diff
 the theme and customization will be more specific, and will include the steps to get
 Hugo into an production environment, including CI/CD and Let's Encrypt certificates.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Step 0 - Installing Hugo](#step-0---installing-hugo)
+- [Step 1 - Setting Up the Theme](#step-1---setting-up-the-theme)
+    - [Theme Installation](#theme-installation)
+    - [Json Resume](#json-resume)
+- [CI/CD](#cicd)
+  - [Pre-commit](#pre-commit)
+  - [Github Actions](#github-actions)
+    - [Check Dead Links](#check-dead-links)
+- [Production](#production)
+  - [Production Environment](#production-environment)
+  - [Systemd Service](#systemd-service)
+  - [Nginx Reverse Proxy](#nginx-reverse-proxy)
+    - [Lets Encrypt Auto-certs via Cloudflare DNS](#lets-encrypt-auto-certs-via-cloudflare-dns)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Step 0 - Installing Hugo
 
 To start, install Hugo from [here](https://gohugo.io/getting-started/installing)
@@ -219,17 +238,17 @@ Then, create a new file `.pre-commit-config.yaml`.
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
       - id: check-toml
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.5.1
+  - repo: https://github.com/thlorenz/doctoc
+    rev: v2.1.0
     hooks:
-      - id: prettier
+      - id: doctoc
 ```
 
 Install the hooks to run on every (local) git commit via `pre-commit install`
@@ -301,9 +320,17 @@ apt install git curl golang -y
 Next, download and install the latest binary release for Hugo (extended) from the [releases][hugo-releases] page.
 
 ```console
-export HUGO_VER="0.91.2"
-curl -L https://github.com/gohugoio/hugo/releases/download/v${HUGO_VER}/hugo_extended_${HUGO_VER}_Linux-64bit.deb -o hugo.deb
-sudo apt install ./hugo.deb
+export HUGO_VER="0.91.2" && \
+curl -L https://github.com/gohugoio/hugo/releases/download/v${HUGO_VER}/hugo_extended_${HUGO_VER}_Linux-64bit.deb -o hugo.deb && \
+apt install ./hugo.deb
+```
+
+Then do the same for the latest NodeJS version.
+
+```console
+export NODE_VER="17.3.0" && \
+curl -L https://nodejs.org/dist/v${NODE_VER}/node-v${NODE_VER}-linux-x64.tar.gz -o node.tar.gz && \
+tar -C /usr/local --strip-components 1 -xzf node.tar.gz && source ~/.bashrc
 ```
 
 Then clone the blog repository and install dependencies.
@@ -339,9 +366,48 @@ WantedBy=multi-user.target
 
 ## Nginx Reverse Proxy
 
-### ACME/Lets Encrypt Auto-certs via Cloudflare DNS
+I have Nginx running as a reverse proxy so I can serve separate sub-domains from the same public IP address.
 
-## Resources
+To serve the blog add the following file `/etc/nginx/sites-avalable/blog`
+
+```nginx
+server {
+        server_name blog.kgb33.dev;
+
+        location / {
+            proxy_pass  http://10.0.0.106:1313;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        	proxy_set_header Host $http_host;
+        	proxy_set_header X-Forwarded-Proto https;
+        	proxy_redirect off;
+        	proxy_http_version 1.1;
+        }
+}
+```
+
+Then enable the site using a symlink.
+
+```console
+sudo ln -s sites-available/blog sites-enabled/blog
+```
+
+### Lets Encrypt Auto-certs via Cloudflare DNS
+
+Install and configure certbot using their [docs][certbot-docs] and setup a DNS record for
+`blog.kgb33.dev`. Then run the following command to get the certs from Lets Encrypt.
+Where `cloudflare.ini` contains the Cloudflare api token.
+
+```console
+sudo certbot -i nginx --dns-cloudflare --dns-cloudflare-credentials ~/cloudflare.ini -d blog.kgb33.dev
+```
+
+Lastly, restart nginx.
+
+```console
+systemctl restart nginx
+```
+
+Then checkout <https://blog.kgb33.dev>!
 
 <!--- Links -->
 
@@ -354,3 +420,4 @@ WantedBy=multi-user.target
 [pre-commit]: https://pre-commit.com/
 [pipx]: https://pypa.github.io/pipx/
 [actions-md-link]: https://github.com/gaurav-nelson/github-action-markdown-link-check
+[certbot-docs]: https://certbot.eff.org/
