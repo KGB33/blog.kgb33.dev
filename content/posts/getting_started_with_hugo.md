@@ -2,8 +2,6 @@
 title: "Getting Started with Hugo"
 date: "2021-12-17T16:22:11-08:00"
 tags: ["hugo"]
-
-draft: true
 ---
 
 This post will mostly mirror Hugo's [quickstart guide][hugo-qs]. With a few differences:
@@ -287,7 +285,59 @@ the Actions tab, click "Check Markdown Links" in the left column, then hit
 the "Run workflow" drop down menu. The action will also run automatically at
 midnight every Sunday and Github will send you an email if it fails.
 
-### Auto Deployment from `main`
+# Production
+
+## Production Environment
+
+This website is ran off of an Ubuntu 21.10 LXE container managed by Proxmox.
+Once the container is up and running make sure to preform an update and download `git` and `curl`.
+
+```console
+apt update && \
+apt upgrade -y && \
+apt install git curl golang -y
+```
+
+Next, download and install the latest binary release for Hugo (extended) from the [releases][hugo-releases] page.
+
+```console
+export HUGO_VER="0.91.2"
+curl -L https://github.com/gohugoio/hugo/releases/download/v${HUGO_VER}/hugo_extended_${HUGO_VER}_Linux-64bit.deb -o hugo.deb
+sudo apt install ./hugo.deb
+```
+
+Then clone the blog repository and install dependencies.
+
+```console
+git clone --recurse-submodules --remote-submodules https://github.com/KGB33/blog.kgb33.dev.git && \
+cd blog.kgb33.dev && \
+hugo mod get && \
+hugo mod npm pack && \
+npm install
+```
+
+> Note: At least one published post is required for Hugo build successfully with this theme.
+
+## Systemd Service
+
+Systemd will be responsible for managing the Hugo server. This will ensure that
+Hugo will restart after a reboot or crash. First, create a systemd unit file at `/etc/systemd/system/hugoserver.service`.
+
+```toml
+[Unit]
+Description=Hugo-Server
+
+[Service]
+ExecStart=/usr/local/bin/hugo server --bind=0.0.0.0
+WorkingDirectory=/root/blog.kgb33.dev/
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## Nginx Reverse Proxy
 
 ### ACME/Lets Encrypt Auto-certs via Cloudflare DNS
 
@@ -297,6 +347,7 @@ midnight every Sunday and Github will send you an email if it fails.
 
 [hugo-qs]: https://gohugo.io/getting-started/quick-start/
 [hugo-mod]: https://gohugo.io/hugo-modules/use-modules/
+[hugo-releases]: https://github.com/gohugoio/hugo/releases
 [theme]: https://github.com/schnerring/hugo-theme-gruvbox
 [theme-json-resume]: https://github.com/schnerring/hugo-mod-json-resume
 [json-resume]: https://jsonresume.org/
