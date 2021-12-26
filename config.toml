@@ -51,6 +51,11 @@ theme = "gruvbox"
     source = "node_modules/@tabler/icons/icons"
     target = "assets/tabler-icons"
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true # used for in-line prismjs
+
 [params]
   avatar = "/images/avatar.jpg"
   author = "Kelton Bassingthwaite"
@@ -66,6 +71,27 @@ theme = "gruvbox"
   	  icon = "github"
       name = "Github"
       url = "https://github.com/KGB33"
+
+	[params.prism]
+	  # https://prismjs.com/#supported-languages
+	  languages = [
+        "markup",
+        "css",
+        "clike",
+        "javascript",
+        "bash",
+        "diff",
+        "toml",
+		"python"
+      ]
+      plugins = [
+        "normalize-whitespace",
+        "toolbar",
+        "copy-to-clipboard",
+        "line-numbers",
+        "command-line",
+        "diff-highlight"
+      ]
 
 [menu]
 	[[menu.main]]
