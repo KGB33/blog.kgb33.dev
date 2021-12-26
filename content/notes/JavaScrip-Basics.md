@@ -7,10 +7,10 @@ draft: false
 ---
 
 Notes following along with freeCodeCamp's JavaScript tutorial.
-
 The tutorial can be found [here](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/es6/)
 and in video from [here](https://www.youtube.com/watch?v=PkZNo7MFNFg).
 
+<!--more-->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 

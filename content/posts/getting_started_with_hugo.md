@@ -8,6 +8,7 @@ This post will mostly mirror Hugo's [quickstart guide][hugo-qs]. With a few diff
 the theme and customization will be more specific, and will include the steps to get
 Hugo into an production environment, including CI/CD and Let's Encrypt certificates.
 
+<!--more-->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 

@@ -9,7 +9,7 @@ draft: false
 In its most basic sense a descriptor is any object whose attribute access has been
 overridden by `__get__()`, `__set__()`, or `__delete__()`. If any of these methods
 are defined the object it is a descriptor.
-
+<!--more-->
 See the official documentation [here](https://docs.python.org/3/howto/descriptor.html).
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->

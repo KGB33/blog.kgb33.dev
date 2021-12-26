@@ -6,11 +6,10 @@ tags: ["sql", "pqsl", "postgres"]
 draft: false
 ---
 
-# Intro
-
 This is a series of notes from FreeCodeCamp's PostgreSQL tutorial.
 The youtube video can be found [here][yt_video].
 
+<!--more-->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
