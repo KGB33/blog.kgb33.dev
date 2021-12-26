@@ -82,7 +82,8 @@ theme = "gruvbox"
         "bash",
         "diff",
         "toml",
-		"python"
+		"python",
+		"sql"
       ]
       plugins = [
         "normalize-whitespace",
