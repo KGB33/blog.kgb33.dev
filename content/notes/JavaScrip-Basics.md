@@ -1,7 +1,9 @@
 ---
 title: "JavaScript Basics"
 date: 2021-12-26T09:32:53-08:00
-draft: true
+tags: ["javascript", "js"]
+
+draft: false
 ---
 
 Notes following along with freeCodeCamp's JavaScript tutorial.

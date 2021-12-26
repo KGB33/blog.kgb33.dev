@@ -3,7 +3,7 @@ title: "Python Descriptors"
 date: 2020-06-11
 tags: ["python", "descriptors"]
 
-draft: true
+draft: false
 ---
 
 In its most basic sense a descriptor is any object whose attribute access has been
