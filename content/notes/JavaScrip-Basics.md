@@ -1,6 +1,6 @@
 ---
 title: "JavaScript Basics"
-date: 2021-12-26T09:32:53-08:00
+date: 2020-02-16
 tags: ["javascript", "js"]
 
 draft: false
