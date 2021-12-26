@@ -55,16 +55,32 @@ theme = "gruvbox"
   avatar = "/images/avatar.jpg"
   author = "Kelton Bassingthwaite"
   description = "Change config.toml -> [params] -> description to update this"
+  defaultTheme = "dark"
+  themeColor = "green"
 
-[[params.social]]
-  icon = "github"
-  name = "Github"
-  url = "https://github.com/KGB33"
+	[params.logo]
+	  text = "reader@blog"
 
-# Gruvbox Green Colors
-[params.style]
-  darkestColor = "#1d2021"
-  darkColor = "#282828"
-  lightColor = "#a89984"
-  lightestColor = "#ebdbb2"
-  primaryColor = "#98971a"
+	[[params.social]]
+  	  icon = "github"
+      name = "Github"
+      url = "https://github.com/KGB33"
+
+[menu]
+	[[menu.main]]
+	identifier = "posts"
+	name = "Posts"
+	url = "/"
+	weight = 10
+
+	[[menu.main]]
+	identifier = "notes"
+	name = "Notes"
+	url = "/notes/"
+	weight = 20
+
+	[[menu.main]]
+	identifier = "projects"
+	name = "Projects"
+	url = "https://github.com/KGB33"
+	weight = 30
