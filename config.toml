@@ -55,6 +55,7 @@ theme = "gruvbox"
   avatar = "/images/avatar.jpg"
   author = "Kelton Bassingthwaite"
   description = "Change config.toml -> [params] -> description to update this"
+  subtitle = ""
   defaultTheme = "dark"
   themeColor = "green"
 
