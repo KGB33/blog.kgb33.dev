@@ -22,7 +22,13 @@ Easily runnable on a Raspberry Pi.
 
 
 # Prerequisites
-## `git` User
+  - Docker & Docker Compose
+  - nginx
+  - A linux server
+
+> Note: The user running the docker container on the server
+> should be named `git`. This allows for the nice `scp` like
+> git URL. 
 
 # Docker Compose Configuration
 
