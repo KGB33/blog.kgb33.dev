@@ -1,7 +1,7 @@
 ---
-title: "Getting Started with Hugo"
+title: "Deploying `blog.kgb33.dev`"
 date: "2021-12-17T16:22:11-08:00"
-tags: ["hugo"]
+tags: ["hugo", "nginx", "letsEncrypt", "CI/CD", "githubActions", "npm"]
 ---
 
 This post will mostly mirror Hugo's [quickstart guide][hugo-qs]. With a few differences:
