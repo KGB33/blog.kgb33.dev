@@ -6,22 +6,6 @@ tags: ["gitea","git","nginx","ssh"]
 draft: true
 ---
 
-<!--more-->
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Getting Going with Gitea](#getting-going-with-gitea)
-- [Prerequisites](#prerequisites)
-- [Docker Compose Configuration](#docker-compose-configuration)
-- [Setting up ssh](#setting-up-ssh)
-- [Networking](#networking)
-  - [HSTS Background](#hsts-background)
-  - [Nginx Proxy and LetsEncrypt](#nginx-proxy-and-letsencrypt)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Getting Going with Gitea
-
 [Gitea][gitea-home] describes itself as a painless self-hosted Git service.
 It has many of the same features as Git[hub/lab], but is much more
 lightweight.
@@ -30,6 +14,18 @@ This deployment runs in a Docker container on a Ubuntu 21.10 server.
 The whole deployment uses ~2% of one CPU core, and ~2GB of RAM.
 Easily runnable on a Raspberry Pi.
 
+<!--more-->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Prerequisites](#prerequisites)
+- [Docker Compose Configuration](#docker-compose-configuration)
+- [Setting up ssh](#setting-up-ssh)
+- [Networking](#networking)
+  - [HSTS Background](#hsts-background)
+  - [Nginx Proxy and LetsEncrypt](#nginx-proxy-and-letsencrypt)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Prerequisites
   - Docker & Docker Compose
