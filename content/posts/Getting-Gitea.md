@@ -3,7 +3,7 @@ title: "Getting Going with Gitea"
 date: 2022-01-23T20:21:52-08:00
 tags: ["gitea","git","nginx","ssh"]
 
-draft: true
+draft: false
 ---
 
 [Gitea][gitea-home] describes itself as a painless self-hosted Git service.
