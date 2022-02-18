@@ -3,7 +3,7 @@ title: "Ansible for Localhost"
 date: 2022-02-03T09:30:36-08:00
 tags: ["ansible", "arch-linux"]
 
-draft: true
+draft: false
 ---
 Ansible is a super powerful system configuration tool that is normally
 used to manage sets of servers. However, as you might have derived from
@@ -27,13 +27,6 @@ the title it can also be used to configure a local deployment.
   - [Add to sudoers](#add-to-sudoers)
   - [Add to docker group](#add-to-docker-group)
   - [Pull down dotfiles](#pull-down-dotfiles)
-- [Install Applications From Source](#install-applications-from-source)
-  - [java-debug & vscode-java-test example](#java-debug--vscode-java-test-example)
-- [Systemd Units](#systemd-units)
-  - [System level](#system-level)
-  - [User level](#user-level)
-- [Pacman hooks](#pacman-hooks)
-  - [jdtls copy](#jdtls-copy)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -47,10 +40,12 @@ Either during the `pacstrap` step or with `pacman` when chrooted in.
 base-devel ansible git
 ```
 After the system has restarted and the user is logged into
-a tty as root, run the following command:
+a tty as root, and the homed user has been created, run the following command:
 ```console
-ansible-pull -U https://git.kgb33.dev/kgb33/ansible.git -e "passwd=********"
+ansible-pull -U https://git.kgb33.dev/kgb33/ansible.git
 ```
+
+The completed ansible project can be viewed at [this repo][ansible-playbook].
 
 # Basics
 
@@ -326,26 +321,70 @@ Then update the `vars_files` and add a new task.
 
 
 # Create user
+I use `systemd-homed` for account management, unfortunately it is not currently
+scriptable and requires a interactive element, as a result the user must be
+created manually **before** running the Ansible playbook using the following command.
+
+```console
+homectl create --identity=./vars/kgb33.identity
+```
+
+Where the `$USER.identity` file is the output of `homectl inspect $USER -EE`
+with the `privileged` key removed.
+
+Once the user has been created Ansible can modified it
+in the following tasks.
+
 ## Add to sudoers
+
+We already modified the `aur_builder`'s permissions in a previous step,
+changing ours is a very similar step.
+```yaml
+    - name: Give kgb33 sudo rights
+      lineinfile:
+        path: /etc/sudoers.d/kgb33-sudo
+        state: present
+        line: "kgb33 ALL=(ALL) ALL"
+        validate: /usr/sbin/visudo -cf %s
+        create: yes
+```
 ## Add to docker group
+
+Here we use the `group` builtin to ensure that the group `docker`
+exists, then the user `kgb33` is added to the `docker` group.
+
+```yaml
+    - name: Ensure Docker Group Exists
+      group:
+        name: docker
+        state: present
+
+    - name: Add kgb33 to the docker role
+      user:
+        name: kgb33
+        groups: docker
+        append: yes
+```
+
 ## Pull down dotfiles
 
-# Install Applications From Source
-## java-debug & vscode-java-test example
+Use a `script` task to clone and checkout dotfiles.
+See [here][atlassian-dotfiles] for a more in-depth tutorial.
 
-# Systemd Units
-## System level
-## User level
-  - `spotifyd`
-  - `pipxUpdate` (timer & service)
-
-# Pacman hooks
-## jdtls copy
-
-
-
-
+```yaml
+    - name: Install dotfiles
+      become: yes
+      become_user: kgb33
+      args:
+        creates: /home/kgb33/.dotfiles/
+      shell: |
+        cd $HOME
+        git clone --bare git@github.com:KGB33/.dotfiles.git $HOME/.dotfiles
+        /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
+```
 <!-- Links -->
+[ansible-playbook]: https://git.kgb33.dev/kgb33/ansible
 [arch-wiki-ansible]: https://wiki.archlinux.org/title/Ansible#Package_management
 
 [ansible-pacman]: https://docs.ansible.com/ansible/latest/collections/community/general/pacman_module.html
+[atlassian-dotfiles]: https://www.atlassian.com/git/tutorials/dotfiles
