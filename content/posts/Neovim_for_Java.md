@@ -10,6 +10,7 @@ draft: true
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+- [Prerequisites](#prerequisites)
 - [Setting up `mfussenegger/nvim-jdtls`](#setting-up-mfusseneggernvim-jdtls)
   - [Eclipse jdtls Installation](#eclipse-jdtls-installation)
   - [Configuration](#configuration)
@@ -18,6 +19,8 @@ draft: true
 - [Setting up `mfussenegger/nvim-dap`](#setting-up-mfusseneggernvim-dap)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+# Prerequisites
 
 # Setting up `mfussenegger/nvim-jdtls`
 ## Eclipse jdtls Installation
