@@ -204,7 +204,7 @@ covered getting certificates with nginx and certbot [here][self-certbot].
 [gitea-conf]: https://docs.gitea.io/en-us/config-cheat-sheet/
 [gitea-ssh]: https://docs.gitea.io/en-us/install-with-docker/#ssh-container-passthrough
 
-[HSTS-doc]: https://opensource.google/projects/hstspreload
+[HSTS-doc]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
 [img-click-to-clone]: /images/posts/gitea-click-to-clone.png
 [img-ssh-network-diagram]: /diagrams/gitea/ssh_path.png
