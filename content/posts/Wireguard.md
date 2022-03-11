@@ -16,8 +16,8 @@ using OPNsense and systemd-networkd.
 - [Generating Point Peer Keys](#generating-point-peer-keys)
 - [Configuring the Site Peer](#configuring-the-site-peer)
 - [Configuring the Point Peer(s)](#configuring-the-point-peers)
-      - [99-wg0.netdev](#99-wg0netdev)
-      - [99-wg0.network](#99-wg0network)
+  - [99-wg0.netdev](#99-wg0netdev)
+  - [99-wg0.network](#99-wg0network)
 - [Toggling the VPN](#toggling-the-vpn)
 - [Additional Resources](#additional-resources)
 
@@ -65,7 +65,7 @@ A `XX-wg0.netdev`, `XX-wg0.network`, `wg-point-private.key`, and `site-point.psk
 > # chmod 0640 /etc/systemd/network/<KEY_FILE>
 > ```
 
-#### 99-wg0.netdev
+## 99-wg0.netdev
 
 ```toml
 [NetDev]
@@ -83,7 +83,7 @@ Endpoint=<Site Peer IP or Domain>:<Port>
 AllowedIPs=0.0.0.0/0
 ```
 
-#### 99-wg0.network
+## 99-wg0.network
 
 Destinations under the `Route` header define what systemd-networkd routes
 though the VPN.
