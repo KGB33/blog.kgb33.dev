@@ -111,6 +111,7 @@ Likewise to turn the VPN on: `networkctl up wg0`
 
 # Additional Resources
 
+- Wireguard -- [Main Site][wg-main] -- [Installation Docs][wg-install]
 - Elouworld -- [WireGuard (via systemd-networkd)][elouworld]
 - Arch Wiki -- [WireGuard][arch-wiki]
 - systemd-networkd -- [Netdev docs][netdev-docs]
@@ -122,3 +123,5 @@ Likewise to turn the VPN on: `networkctl up wg0`
 [elouworld]: https://elou.world/en/tutorial/wireguard
 [arch-wiki]: https://wiki.archlinux.org/title/WireGuard
 [netdev-docs]: https://www.freedesktop.org/software/systemd/man/systemd.netdev.html#%5BWireGuard%5D%20Section%20Options
+[wg-main]: https://www.wireguard.com/
+[wg-install]: https://www.wireguard.com/install/
