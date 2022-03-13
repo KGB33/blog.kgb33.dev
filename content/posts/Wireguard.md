@@ -3,7 +3,7 @@ title: "Point-to-Site Wireguard Configuration"
 date: 2022-03-08T09:22:17-08:00
 tags: ["Wireguard", "opnsense", "networkd"]
 
-draft: true
+draft: false
 ---
 
 Configuring Wireguard to allow a "road-warrior" (aka point-to-site) setup
@@ -33,7 +33,7 @@ Keys need to be generated for each point that wants to connect
 and cannot be reused.
 
 The following commands will create the three key files a point will need
-to connect to the site; A private key, a public key, and a pre-shared key.
+to connect to the site: a private key, a public key, and a pre-shared key.
 
 ```
 $ wg genkey | (umask 0077 && tee wg-point-private.key) | wg pubkey > wg-point-public.key
