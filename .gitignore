@@ -6,3 +6,6 @@ hugo_stats.json
 
 # Node
 node_modules/
+
+# Dagger
+cue.mod/
