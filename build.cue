@@ -54,7 +54,8 @@ dagger.#Plan & {
 				docker.#Copy & {contents: _theme.output, dest: "/blog/themes/gruvbox/"},
 				docker.#Copy & {
 					contents: client.filesystem."./".read.contents
-					dest:     "/blog/"
+					include: ["go.mod", "go.sum", "package.json", "package-lock.json", "package.hugo.json", "config.toml"]
+					dest: "/blog/"
 				},
 				docker.#Run & {
 					workdir: "/blog/"
@@ -67,6 +68,10 @@ dagger.#Plan & {
 				docker.#Run & {
 					workdir: "/blog/"
 					command: {name: "npm", args: ["install"]}
+				},
+				docker.#Copy & {
+					contents: client.filesystem."./".read.contents
+					dest:     "/blog/"
 				},
 				docker.#Set & {config: {
 					workdir: "/blog/"
