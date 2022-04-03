@@ -12,7 +12,7 @@ dagger.#Plan & {
 	client: {
 		filesystem: "./": read: {
 			contents: dagger.#FS
-			exclude: ["node_modules", "public", "build.cue", "cue.mod", "themes"]
+			exclude: ["node_modules", "public", "build.cue", "cue.mod", "themes", ".envrc"]
 		}
 		env: GHCR_PAT: dagger.#Secret
 	}
@@ -21,8 +21,8 @@ dagger.#Plan & {
 		_baseGo: go.#Image & {
 			version: "1.18"
 			packages: {
-				"gcc":_
-				"g++":_
+				"gcc": _
+				"g++": _
 			}
 		}
 		_hugoSource: git.#Pull & {
@@ -71,8 +71,14 @@ dagger.#Plan & {
 				docker.#Set & {config: {
 					workdir: "/blog/"
 					cmd: ["/bin/hugo", "server", "--bind=0.0.0.0"]
+					label: "org.opencontainers.image.source": "https://github.com/kgb33/blog.kgb33.dev"
 				}},
 			]
+		}
+		publish: docker.#Push & {
+			dest:  "ghcr.io/kgb33/blog.kgb33.dev"
+			image: build.output
+			auth: {username: "kgb33", secret: client.env.GHCR_PAT}
 		}
 	}
 }
