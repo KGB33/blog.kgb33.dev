@@ -21,7 +21,14 @@ Part 1 covers building the docker image an pushing it to the Github container re
     - [Base Go 1.18 image](#base-go-118-image)
     - [Pull Hugo Source code](#pull-hugo-source-code)
     - [Build Hugo](#build-hugo)
-  - [NPM](#npm)
+  - [Base dependencies](#base-dependencies)
+  - [Putting it all Together](#putting-it-all-together)
+    - [Copy Hugo Binary and Theme Files](#copy-hugo-binary-and-theme-files)
+    - [Copy `sum` and `lock` Files](#copy-sum-and-lock-files)
+    - [Download and Install Dependencies](#download-and-install-dependencies)
+    - [Copy Blog Content](#copy-blog-content)
+    - [Set Configuration](#set-configuration)
+    - [Complete Build Action](#complete-build-action)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -120,7 +127,124 @@ dagger.#Plan & {
 }
 ```
 
-## NPM
+## Base dependencies
+
+Create a new image using `universe.dagger.io/apline.#Build` with the packages that we need.
+
+> Note: We could specify the versions needed (replace the underscore)
+> but alpine already pins package versions to the distribution version.
+> See [Issue #1532][dagger-gh-issue-1532] for more info.
+
+```cue-lang
+dagger.#Plan & {
+        actions: {
+                _base: alpine.#Build & {
+                        packages: {
+                                "npm": _
+                                "go":  _
+                                "git": _
+                        }
+                }
+        }
+}
+```
+
+## Putting it all Together
+
+This last action is the biggest. It is a series of steps in `docker.#Build`
+where each step can be thought of a line in a Dockerfile. I am going to explain
+each step in order, then display the completed action at the end.
+
+### Copy Hugo Binary and Theme Files
+
+Starting with the image generated from the `_base` step,
+copy the hugo binary to `/bin/hugo`, then copy the theme files
+to `blog/themes/gruvbox/`.
+
+```cue-lang
+dagger.#Plan & {
+        actions: {
+                build: docker.#Build & {
+                        steps: [
+                                _base,
+                                docker.#Copy & {contents: _hugoBin.output, dest: "/bin/"},
+                                docker.#Copy & {contents: _theme.output, dest: "/blog/themes/gruvbox/"},
+
+                                ...
+								]
+						}
+				}
+}
+```
+
+### Copy `sum` and `lock` Files
+
+Next, copy over various package definition files.
+These are copied over before the rest of the content
+to utilize the builtin caching.
+
+```cue-lang
+dagger.#Plan & {
+	client: {
+		filesystem: "./": read: {
+			contents: dagger.#FS
+			exclude: ["node_modules", "public", "build.cue", "cue.mod", "themes", ".envrc"]
+		}
+	}
+    actions: {
+		build: docker.#Build & {
+            steps: [
+				...
+				docker.#Copy & {
+                            contents: client.filesystem."./".read.contents
+                            include: ["go.mod", "go.sum", "package.json", "package-lock.json", "package.hugo.json", "config.toml"]
+                            dest: "/blog/"
+                },
+				...
+			]
+		}
+	}
+}
+```
+
+### Download and Install Dependencies
+
+A fairly self explanatory set of steps.
+
+```
+dagger.#Plan & {
+    actions: {
+		build: docker.#Build & {
+            steps: [
+				...
+                docker.#Run & {
+                        workdir: "/blog/"
+                        command: {name: "hugo", args: ["mod", "get"]}
+                },
+                docker.#Run & {
+                        workdir: "/blog/"
+                        command: {name: "hugo", args: ["mod", "npm", "pack"]}
+                },
+                docker.#Run & {
+                        workdir: "/blog/"
+                        command: {name: "npm", args: ["install"]}
+                },
+				...
+			]
+		}
+	}
+}
+```
+
+### Copy Blog Content
+
+### Set Configuration
+
+### Complete Build Action
+
+```cue-lang
+
+```
 
 <!-- links -->
 
@@ -129,4 +253,5 @@ dagger.#Plan & {
 [dagger-plan]: https://docs.dagger.io/1202/plan
 [dagger-uni-go]: https://github.com/dagger/dagger/tree/main/pkg/universe.dagger.io/go
 [dagger-uni-git]: https://github.com/dagger/dagger/tree/main/pkg/universe.dagger.io/git
+[dagger-gh-issue-1532]: https://github.com/dagger/dagger/issues/1532
 [cue-disjunction]: https://cuelang.org/docs/tutorials/tour/types/disjunctions/
