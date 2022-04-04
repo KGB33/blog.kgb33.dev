@@ -3,6 +3,7 @@ package main
 import (
 	"dagger.io/dagger"
 	"universe.dagger.io/docker"
+	"universe.dagger.io/docker/cli"
 	"universe.dagger.io/alpine"
 	"universe.dagger.io/go"
 	"universe.dagger.io/git"
@@ -15,6 +16,7 @@ dagger.#Plan & {
 			exclude: ["node_modules", "public", "build.cue", "cue.mod", "themes", ".envrc"]
 		}
 		env: GHCR_PAT: dagger.#Secret
+		network: "unix:///var/run/docker.sock": connect: dagger.#Socket
 	}
 
 	actions: {
@@ -84,6 +86,21 @@ dagger.#Plan & {
 			dest:  "ghcr.io/kgb33/blog.kgb33.dev"
 			image: build.output
 			auth: {username: "kgb33", secret: client.env.GHCR_PAT}
+		}
+		local: {
+			load: cli.#Load & {
+				image: build.output
+				tag:   "blog.kgb33.dev:latest"
+				host:  client.network."unix:///var/run/docker.sock".connect
+			}
+			// Unsure how to detach from container Currently dagger 'hangs'
+			// while running the hugo server. Cancel via <Ctrl-C>
+			run: cli.#Run & {
+				cli.#RunSocket & {
+					host: client.network."unix:///var/run/docker.sock".connect
+				}
+				input: build.output
+			}
 		}
 	}
 }
