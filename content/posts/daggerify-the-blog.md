@@ -28,7 +28,8 @@ Part 1 covers building the docker image an pushing it to the Github container re
     - [Download and Install Dependencies](#download-and-install-dependencies)
     - [Copy Blog Content](#copy-blog-content)
     - [Set Configuration](#set-configuration)
-    - [Complete Build Action](#complete-build-action)
+  - [Local convenience Actions](#local-convenience-actions)
+  - [Complete Actions](#complete-actions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -238,18 +239,199 @@ dagger.#Plan & {
 
 ### Copy Blog Content
 
-### Set Configuration
-
-### Complete Build Action
+Once again a simple step. Just copying frequently changed content files
+into the image.
 
 ```cue-lang
+dagger.#Plan & {
+    actions: {
+		build: docker.#Build & {
+            steps: [
+				...
+				docker.#Copy & {
+                    contents: client.filesystem."./".read.contents
+                    dest:     "/blog/"
+                },
+				...
+			]
+		}
+	}
+}
+```
 
+### Set Configuration
+
+This step sets a view values defined [here][dagger-img-conf]. `workdir` is self
+explanatory, it sets the working directory for the `cmd` option. `cmd` is the
+command that runs by default. In other words, when `docker run $IMG_NAME` is
+run it starts the container and calls the command defined by `cmd`.
+
+Lastly `label` is used to connect the entry on the Github Container registry to
+the github repository where the source code is stored.
+
+```cue-lang
+dagger.#Plan & {
+    actions: {
+		build: docker.#Build & {
+            steps: [
+				...
+                docker.#Set & {config: {
+                    workdir: "/blog/"
+                    cmd: ["/bin/hugo", "server", "--bind=0.0.0.0"]
+                    label: "org.opencontainers.image.source": "https://github.com/kgb33/blog.kgb33.dev"
+                }},
+				...
+			]
+		}
+	}
+}
+```
+
+## Local convenience Actions
+
+`dagger do local load` loads the image into the local docker registry.
+
+`dagger do local run` automatically runs the hugo server. Although this will
+cause dagger to hang because the action never completes.
+
+```cue-lang
+dagger.#Plan & {
+    actions: {
+		local: {
+            load: cli.#Load & {
+                    image: build.output
+                    tag:   "blog.kgb33.dev:latest"
+                    host:  client.network."unix:///var/run/docker.sock".connect
+            }
+            // Unsure how to detach from container Currently dagger 'hangs'
+            // while running the hugo server. Cancel via <Ctrl-C>
+            run: cli.#Run & {
+                    cli.#RunSocket & {
+                            host: client.network."unix:///var/run/docker.sock".connect
+                    }
+                    input: build.output
+            }
+        }
+	}
+}
+```
+
+## Complete Actions
+
+```cue-lang
+package main
+
+import (
+	"dagger.io/dagger"
+	"universe.dagger.io/docker"
+	"universe.dagger.io/docker/cli"
+	"universe.dagger.io/alpine"
+	"universe.dagger.io/go"
+	"universe.dagger.io/git"
+)
+
+dagger.#Plan & {
+	client: {
+		filesystem: "./": read: {
+			contents: dagger.#FS
+			exclude: ["node_modules", "public", "build.cue", "cue.mod", "themes", ".envrc"]
+		}
+		env: GHCR_PAT: dagger.#Secret
+		network: "unix:///var/run/docker.sock": connect: dagger.#Socket
+	}
+
+	actions: {
+		_baseGo: go.#Image & {
+			version: "1.18"
+			packages: {
+				"gcc": _
+				"g++": _
+			}
+		}
+		_hugoSource: git.#Pull & {
+			remote: "https://github.com/gohugoio/hugo.git"
+			ref:    "v0.96.0"
+		}
+		_hugoBin: go.#Build & {
+			source:    _hugoSource.output
+			container: go.#Container & {input: _baseGo.output}
+			tags:      "extended"
+			env: "CGO_ENABLED": "1"
+		}
+		_base: alpine.#Build & {
+			packages: {
+				"npm": _
+				"go":  _
+				"git": _
+			}
+		}
+		_theme: git.#Pull & {
+			remote: "https://github.com/schnerring/hugo-theme-gruvbox.git"
+			ref:    "main"
+		}
+		build: docker.#Build & {
+			steps: [
+				_base,
+				docker.#Copy & {contents: _hugoBin.output, dest: "/bin/"},
+
+				docker.#Copy & {contents: _theme.output, dest: "/blog/themes/gruvbox/"},
+				docker.#Copy & {
+					contents: client.filesystem."./".read.contents
+					include: ["go.mod", "go.sum", "package.json", "package-lock.json", "package.hugo.json", "config.toml"]
+					dest: "/blog/"
+				},
+				docker.#Run & {
+					workdir: "/blog/"
+					command: {name: "hugo", args: ["mod", "get"]}
+				},
+				docker.#Run & {
+					workdir: "/blog/"
+					command: {name: "hugo", args: ["mod", "npm", "pack"]}
+				},
+				docker.#Run & {
+					workdir: "/blog/"
+					command: {name: "npm", args: ["install"]}
+				},
+				docker.#Copy & {
+					contents: client.filesystem."./".read.contents
+					dest:     "/blog/"
+				},
+				docker.#Set & {config: {
+					workdir: "/blog/"
+					cmd: ["/bin/hugo", "server", "--bind=0.0.0.0"]
+					label: "org.opencontainers.image.source": "https://github.com/kgb33/blog.kgb33.dev"
+				}},
+			]
+		}
+		publish: docker.#Push & {
+			dest:  "ghcr.io/kgb33/blog.kgb33.dev"
+			image: build.output
+			auth: {username: "kgb33", secret: client.env.GHCR_PAT}
+		}
+		local: {
+			load: cli.#Load & {
+				image: build.output
+				tag:   "blog.kgb33.dev:latest"
+				host:  client.network."unix:///var/run/docker.sock".connect
+			}
+			// Unsure how to detach from container Currently dagger 'hangs'
+			// while running the hugo server. Cancel via <Ctrl-C>
+			run: cli.#Run & {
+				cli.#RunSocket & {
+					host: client.network."unix:///var/run/docker.sock".connect
+				}
+				input: build.output
+			}
+		}
+	}
+}
 ```
 
 <!-- links -->
 
 [blog-deployment]: https://blog.kgb33.dev/posts/getting_started_with_hugo/#production
 [dagger]: https://dagger.io/
+[dagger-img-conf]: https://github.com/dagger/dagger/blob/7dbe4e9aa5da61d1ea2f5b12005812ff617a7ff5/pkg/dagger.io/dagger/image.cue#L12
 [dagger-plan]: https://docs.dagger.io/1202/plan
 [dagger-uni-go]: https://github.com/dagger/dagger/tree/main/pkg/universe.dagger.io/go
 [dagger-uni-git]: https://github.com/dagger/dagger/tree/main/pkg/universe.dagger.io/git
