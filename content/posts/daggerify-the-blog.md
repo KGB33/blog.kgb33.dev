@@ -3,14 +3,14 @@ title: "Daggerify the Blog - Part 1: Build"
 date: 2022-03-30T09:23:50-07:00
 tags: ["dagger", "docker"]
 
-draft: true
+draft: false
 ---
 
 The original deployment strategy ([detailed here][blog-deployment]) for this blog was
 manual and error prone. The ideal goal is to use [dagger][dagger] to build out
-the whole CI/CD system, from building the image to deploying on a local Kubernetes cluster.
+the whole CI/CD system; from building the image to deploying on a local Kubernetes cluster.
 
-Part 1 covers building the docker image an pushing it to the Github container registry.
+Part 1 covers building the docker image and pushing it to the Github container registry.
 
 <!--more-->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -53,7 +53,7 @@ Each of the following is an action defined with a [dagger plan][dagger-plan].
 First a base image with Go 1.18 need to be created. It is defined as the
 [disjunction][cue-disjunction] between the `go.#Image` struct, and the
 `{version: "1.18"}` struct. The output of this step, defined by `go.#Image`,
-can be used by other actions; kinda like multi-stage docker builds.
+can be used by other actions; similar to multi-stage docker builds.
 
 ```cue-lang
 package main
