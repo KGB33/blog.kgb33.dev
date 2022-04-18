@@ -55,7 +55,7 @@ First a base image with Go 1.18 need to be created. It is defined as the
 `{version: "1.18"}` struct. The output of this step, defined by `go.#Image`,
 can be used by other actions; similar to multi-stage docker builds.
 
-```cue-lang
+```cue
 package main
 
 import (
@@ -78,7 +78,7 @@ dagger.#Plan & {
 
 The Hugo source can be pulled in using the Dagger [git package][dagger-uni-git].
 
-```cue-lang
+```cue
 package main
 
 import (
@@ -102,7 +102,7 @@ This action utilizes the output of the previous two actions to build the hugo
 binary. Notice how `_hugoSource.output` and `_baseGo.output` are passed to
 the `go.#Build` struct.
 
-```cue-lang
+```cue
 package main
 
 import (
@@ -136,7 +136,7 @@ Create a new image using `universe.dagger.io/apline.#Build` with the packages th
 > but alpine already pins package versions to the distribution version.
 > See [Issue #1532][dagger-gh-issue-1532] for more info.
 
-```cue-lang
+```cue
 dagger.#Plan & {
         actions: {
                 _base: alpine.#Build & {
@@ -162,7 +162,7 @@ Starting with the image generated from the `_base` step,
 copy the hugo binary to `/bin/hugo`, then copy the theme files
 to `blog/themes/gruvbox/`.
 
-```cue-lang
+```cue
 dagger.#Plan & {
         actions: {
                 build: docker.#Build & {
@@ -184,7 +184,7 @@ Next, copy over various package definition files.
 These are copied over before the rest of the content
 to utilize the builtin caching.
 
-```cue-lang
+```cue
 dagger.#Plan & {
 	client: {
 		filesystem: "./": read: {
@@ -212,7 +212,7 @@ dagger.#Plan & {
 
 A fairly self explanatory set of steps.
 
-```
+```cue
 dagger.#Plan & {
     actions: {
 		build: docker.#Build & {
@@ -242,7 +242,7 @@ dagger.#Plan & {
 Once again a simple step. Just copying frequently changed content files
 into the image.
 
-```cue-lang
+```cue
 dagger.#Plan & {
     actions: {
 		build: docker.#Build & {
@@ -269,7 +269,7 @@ run it starts the container and calls the command defined by `cmd`.
 Lastly `label` is used to connect the entry on the Github Container registry to
 the github repository where the source code is stored.
 
-```cue-lang
+```cue
 dagger.#Plan & {
     actions: {
 		build: docker.#Build & {
@@ -294,7 +294,7 @@ dagger.#Plan & {
 `dagger do local run` automatically runs the hugo server. Although this will
 cause dagger to hang because the action never completes.
 
-```cue-lang
+```cue
 dagger.#Plan & {
     actions: {
 		local: {
@@ -318,7 +318,7 @@ dagger.#Plan & {
 
 ## Complete Actions
 
-```cue-lang
+```cue
 package main
 
 import (

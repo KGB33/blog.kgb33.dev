@@ -59,7 +59,7 @@ theme = "gruvbox"
 [params]
   avatar = "/images/avatar.jpg"
   author = "Kelton Bassingthwaite"
-  description = "Change config.toml -> [params] -> description to update this"
+  description = ""
   subtitle = ""
   defaultTheme = "dark"
   themeColor = "green"
@@ -84,7 +84,8 @@ theme = "gruvbox"
         "diff",
         "toml",
 		"python",
-		"sql"
+		"sql",
+		"cue"
       ]
       plugins = [
         "normalize-whitespace",
