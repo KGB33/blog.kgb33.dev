@@ -9,6 +9,10 @@ Ansible is a super powerful system configuration tool that is normally
 used to manage sets of servers. However, as you might have derived from
 the title it can also be used to configure a local deployment.
 
+> Edit: I had to reinstall Arch, this playbook works, mostly. 
+> `vars/pacman_packages.yaml` was missing some packages that later steps needed. 
+> It still saved me hours of work though.
+
 <!--more-->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -383,7 +387,7 @@ See [here][atlassian-dotfiles] for a more in-depth tutorial.
         /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 ```
 <!-- Links -->
-[ansible-playbook]: https://git.kgb33.dev/kgb33/ansible
+[ansible-playbook]: https://github.com/KGB33/ansible/tree/main/playbooks/local
 [arch-wiki-ansible]: https://wiki.archlinux.org/title/Ansible#Package_management
 
 [ansible-pacman]: https://docs.ansible.com/ansible/latest/collections/community/general/pacman_module.html
