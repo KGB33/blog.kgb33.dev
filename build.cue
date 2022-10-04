@@ -20,24 +20,18 @@ dagger.#Plan & {
 	}
 
 	actions: {
-		_baseGo: go.#Image & {
-			version: "1.18"
-			packages: {
-				"gcc": _
-				"g++": _
-			}
-		}
 		_hugoSource: git.#Pull & {
 			remote: "https://github.com/gohugoio/hugo.git"
-			ref:    "v0.96.0"
+			ref:    "v0.104.3"
 		}
 		_hugoBin: go.#Build & {
 			source:    _hugoSource.output
-			container: go.#Container & {input: _baseGo.output}
+		//	container: go.#Container & {input: _baseGo.output}
 			tags:      "extended"
 			env: "CGO_ENABLED": "1"
 		}
 		_base: alpine.#Build & {
+			version: "3.16"
 			packages: {
 				"npm": _
 				"go":  _
