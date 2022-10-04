@@ -3,6 +3,6 @@ module blog.kgb33.dev
 go 1.17
 
 require (
-	github.com/schnerring/hugo-mod-github-readme-stats v0.0.0-20220424234158-544d1e81c144 // indirect
-	github.com/schnerring/hugo-mod-json-resume v0.0.0-20220424233802-d6b100e293df // indirect
+	github.com/schnerring/hugo-mod-github-readme-stats v0.0.0-20220625143204-eae468cb8bf2 // indirect
+	github.com/schnerring/hugo-mod-json-resume v0.0.0-20220705211654-85dc7d5e1a40 // indirect
 )
