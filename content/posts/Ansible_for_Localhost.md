@@ -9,11 +9,11 @@ Ansible is a super powerful system configuration tool that is normally
 used to manage sets of servers. However, as you might have derived from
 the title it can also be used to configure a local deployment.
 
+<!--more-->
 > Edit: I had to reinstall Arch, this playbook works, mostly. 
 > `vars/pacman_packages.yaml` was missing some packages that later steps needed. 
 > It still saved me hours of work though.
 
-<!--more-->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
