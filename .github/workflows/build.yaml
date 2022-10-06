@@ -1,6 +1,7 @@
 name: "Build & Push Container Image"
-permissions:
-  packages: write
+permissions: read-all|write-all
+  #packages: write
+
 
 # Only a single job with this concurrency can run at any given time
 concurrency: release
@@ -27,4 +28,5 @@ jobs:
           cmds: |
             project init
             project update
+            do build
             do publish
