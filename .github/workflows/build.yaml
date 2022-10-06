@@ -1,0 +1,27 @@
+name: "Build & Push Container Image"
+
+# Only a single job with this concurrency can run at any given time
+concurrency: release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+jobs:
+  publish:
+    name: "Build & Push to GHCR"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: "Callout to dagger"
+        uses: dagger/dagger-for-github@v3
+        env:
+          GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          cmd: |
+            project update
+            do publish
