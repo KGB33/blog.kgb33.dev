@@ -1,5 +1,4 @@
 name: "Build & Push Container Image"
-permissions: read-all|write-all
   #packages: write
 
 
@@ -11,6 +10,9 @@ on:
   push:
     branches:
       - 'main'
+permissions:
+  - read-all
+  - write-all
 jobs:
   publish:
     name: "Build & Push to GHCR"
