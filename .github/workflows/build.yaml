@@ -23,5 +23,6 @@ jobs:
           GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
           cmds: |
+            project init
             project update
             do publish
