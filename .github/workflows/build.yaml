@@ -1,6 +1,4 @@
 name: "Build & Push Container Image"
-  #packages: write
-
 
 # Only a single job with this concurrency can run at any given time
 concurrency: release
@@ -26,6 +24,7 @@ jobs:
         env:
           GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
+          # Use buildkit's gha cache support
           cmds: |
             project init
             project update
