@@ -26,6 +26,8 @@ jobs:
           GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
         with:
           # Use buildkit's gha cache support
+          # Watch https://github.com/dagger/dagger-for-github/issues/39
+          # for cache support being built-into the dagger-action
           cmds: |
             project init
             project update
