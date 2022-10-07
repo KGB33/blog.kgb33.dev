@@ -29,5 +29,5 @@ jobs:
           cmds: |
             project init
             project update
-            do --cache-from gha --cache-to gha build
-            do --cache-from gha --cache-to gha publish
+            do --cache-from type=gha --cache-to type=gha build
+            do --cache-from type=gha --cache-to type=gha publish
