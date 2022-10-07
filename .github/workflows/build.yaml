@@ -10,6 +10,7 @@ on:
       - 'main'
 permissions:
   packages: write
+  actions: read|write
 jobs:
   publish:
     name: "Build & Push to GHCR"
