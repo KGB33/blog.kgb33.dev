@@ -83,6 +83,7 @@ theme = "gruvbox"
         "bash",
         "diff",
         "toml",
+		"yaml",
 		"python",
 		"sql",
 		"cue"

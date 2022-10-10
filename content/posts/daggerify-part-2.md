@@ -1,5 +1,5 @@
 ---
-title: "Daggerify-Part-2"
+title: "Dagger in Github Actions"
 date: 2022-10-09T15:26:22-07:00
 draft: true
 ---
@@ -21,7 +21,7 @@ of the technologies have changed. This particular post is all about integrating 
 
 # Running The Action
 
-I want changes to go live as soon as possible. To acomplish this the action will run
+I want changes to go live as soon as possible. To accomplish this the action will run
 whenever something is pushed to the `main` branch.
 
 ```yaml
@@ -34,11 +34,15 @@ on:
       - 'main'
 ```
 
-> A Note On `concurrency: release`: This prevents race conditions and ensures that the packages
+> Note:`concurrency: release`: This prevents race conditions and ensures that the packages
 > are pushed to GHCR in the correct order.
 
 
 # Dagger Action
+
+The entire Github Action pipeline consists of two steps.
+  1. Checkout the code.
+  1. Run Dagger.
 
 Installing Dagger is handled by the [dagger-for-github](https://github.com/dagger/dagger-for-github/)
 action.
@@ -67,10 +71,13 @@ jobs:
             do --cache-from type=gha --cache-to type=gha publish
 ```
 
+> Note: The `GITHUB_TOKEN` secret is passed to Dagger as the `GHCR_PAT` environment variable
+> because the dagger plan expects the Github Token to be called `GHCR_PAT`.
+
 
 ## Buildkit Caching
 
-Caching is provided "for free" by buildkit using their specal `gha` type cache.
+Caching is provided "for free" by buildkit using their special `gha` type cache.
 Eventually this will be configurable using the `with:` section on the `dagger-for-github`
 action. Keep an eye on [Issue #39](https://github.com/dagger/dagger-for-github/issues/39).
 
