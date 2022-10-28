@@ -1,7 +1,7 @@
 ---
 title: "Dagger in Github Actions"
 date: 2022-10-09T15:26:22-07:00
-draft: true
+draft: False
 ---
 
 It's been a while since part one and I've learned so much about automation and GitOps.
