@@ -3,7 +3,7 @@ title: "GPG Keys"
 date: 2022-10-28T10:01:42-07:00
 tags: ['git', 'gpg']
 
-draft: true
+draft: false
 ---
 
 Have you ever wondered why (or how) someone's commit has a fancy *"verified"* badge on Github?
