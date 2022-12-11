@@ -6,8 +6,11 @@
     "profiles": [
       {
         "network": "Github",
-        "username": "KGB33",
         "url": "https://github.com/KGB33"
+      },
+      {
+        "network": "Mastodon",
+        "url": "https://mastodon.kgb33.dev/@kgb33"
       }
     ]
   }
