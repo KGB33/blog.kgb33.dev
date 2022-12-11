@@ -65,53 +65,48 @@ theme = "gruvbox"
   themeColor = "green"
   mainSections = ['posts', 'notes']
 
-	[params.logo]
-	  text = "reader@blog"
+[params.logo]
+  text = "reader@blog"
 
-	[[params.social]]
-  	  icon = "github"
-      name = "Github"
-      url = "https://github.com/KGB33"
-
-	[params.prism]
-	  # https://prismjs.com/#supported-languages
-	  languages = [
-        "markup",
-        "css",
-        "clike",
-        "javascript",
-        "bash",
-        "diff",
-        "toml",
-		"yaml",
-		"python",
-		"sql",
-		"cue"
-      ]
-      plugins = [
-        "normalize-whitespace",
-        "toolbar",
-        "copy-to-clipboard",
-        "line-numbers",
-        "command-line",
-        "diff-highlight"
-      ]
+[params.prism]
+  # https://prismjs.com/#supported-languages
+  languages = [
+    "markup",
+    "css",
+    "clike",
+    "javascript",
+    "bash",
+    "diff",
+    "toml",
+    "yaml",
+    "python",
+    "sql",
+    "cue"
+  ]
+  plugins = [
+    "normalize-whitespace",
+    "toolbar",
+    "copy-to-clipboard",
+    "line-numbers",
+    "command-line",
+    "diff-highlight"
+  ]
 
 [menu]
-	[[menu.main]]
-	identifier = "posts"
-	name = "Posts"
-	url = "/posts/"
-	weight = 10
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/posts/"
+weight = 10
 
-	[[menu.main]]
-	identifier = "notes"
-	name = "Notes"
-	url = "/notes/"
-	weight = 20
+[[menu.main]]
+identifier = "notes"
+name = "Notes"
+url = "/notes/"
+weight = 20
 
-	[[menu.main]]
-	identifier = "projects"
-	name = "Projects"
-	url = "https://github.com/KGB33"
-	weight = 30
+[[menu.main]]
+identifier = "projects"
+name = "Projects"
+url = "https://github.com/KGB33"
+weight = 30
