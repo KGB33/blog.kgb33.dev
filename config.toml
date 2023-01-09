@@ -63,7 +63,7 @@ theme = "gruvbox"
   subtitle = ""
   defaultTheme = "dark"
   themeColor = "green"
-  mainSections = ['posts', 'notes']
+  mainSections = ['posts', 'notes', 'TiL']
 
 [params.logo]
   text = "reader@blog"
@@ -100,13 +100,20 @@ url = "/posts/"
 weight = 10
 
 [[menu.main]]
+identifier = "TiL"
+name = "TiL"
+url = "/TiL/"
+weight = 20
+
+[[menu.main]]
 identifier = "notes"
 name = "Notes"
 url = "/notes/"
-weight = 20
+weight = 30
+
 
 [[menu.main]]
 identifier = "projects"
 name = "Projects"
 url = "https://github.com/KGB33"
-weight = 30
+weight = 40
