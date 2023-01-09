@@ -3,7 +3,7 @@ title: "Sops and Age"
 date: 2023-01-08T21:03:27-08:00
 tags: ["TiL", "sops", "age"]
 
-draft: true
+draft: false
 ---
 <!--more-->
 
