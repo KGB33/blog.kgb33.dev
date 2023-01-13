@@ -84,10 +84,32 @@ in my homelab.
 
 # Pre-Terraforming Work
 
+As alluded to previously, there are a few steps that
+still need to be done manually. Namely setting up the VM
+to clone.
+
 ## Setting Up Storage
+
+My Proxmox cluster is pretty bare bones, so there is (was)
+no network storage. Unfortunately, when cloning a VM the new
+VM must have the same storage, i.e. a template on Host A local storage
+cannot be cloned to Host B.
+
+My solution for this was to create a Ceph storage pool. I created
+it following [Deploy Hyper-Converged Ceph Cluster][proxmox-ceph],
+although I only have one Object Storage Daemons (OSD) so I had to
+manually lower the min placement groups to one.
+
 
 ## Creating the "Template"
 
+Creating the template is super easy. Just follow the Ubuntu server
+install, just make sure to import your ssh keys! Once the installation
+is complete, remove the CD-ROM disk & reboot. When the server comes
+back up install Ansible. Shut the machine back down then it's good to go.
+
+> Note: You don't need to convert the VM to a template. In fact if you
+> don't it's easier to make changes to the base image.
 
 # Terraforming Proxmox
 
@@ -107,3 +129,4 @@ in my homelab.
 
 <!-- link -->
 [ansible-proxmox]: https://docs.ansible.com/ansible/latest/collections/community/general/proxmox_module.html
+[proxmox-ceph]: https://pve.proxmox.com/wiki/Deploy_Hyper-Converged_Ceph_Cluster
