@@ -8,14 +8,13 @@ draft: true
 
 I recently experimented automating VM creation across my
 Proxmox cluster. I tested out several tools before finally
-settling on Terraform & cloning from a Proxmox "template".
+settling on Terraform and cloning from a Proxmox "template".
 
 <!--more-->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Goals](#goals)
-  - [Non-Goals](#non-goals)
 - [Other Tools Considered](#other-tools-considered)
   - [Ansible](#ansible)
   - [Cloud-init](#cloud-init)
@@ -28,7 +27,7 @@ settling on Terraform & cloning from a Proxmox "template".
   - [Defining Providers](#defining-providers)
   - [Resource Definition](#resource-definition)
   - [Variable Variables](#variable-variables)
-    - [Sops Aside](#sops-aside)
+    - [SOPS Aside](#sops-aside)
   - [Network Configuration](#network-configuration)
 - [Provisioners](#provisioners)
     - [Connection](#connection)
@@ -41,17 +40,14 @@ settling on Terraform & cloning from a Proxmox "template".
 
 # Goals
 
-Use Infrastructure-as-code tools to create multiple VMs on various
-Proxmox nodes. Eventually, these VMs will run a Kubernetes cluster.
-
- - VMs are created (and destroyed) using a single command.
- - Minimize manual steps.
-
-## Non-Goals
-
-There really is only one non-goal - Persistent Storage.
-None of the (planned) Kubernetes services need persistent
-storage, so that will be a project for another day.
+The overall goal is to use Infrastructure-as-code tools to create multiple VMs
+on various Proxmox nodes. Eventually, these VMs will run a Kubernetes cluster.
+Theses VMs should be created (and destroyed) using a single command. Manual
+steps need to be kept to a minimum and should only have to be done once,
+regardless of how many times the VMs are (re)created. Importantly, having
+persistent storage for these VMs is a non-issue. None of the (planned)
+Kubernetes services need persistent storage, so that will be a project for
+another day.
 
 # Other Tools Considered
 
@@ -61,20 +57,20 @@ but I also tried out a bunch of other tools too.
 ## Ansible
 
 My original plan was to use the [Proxmox module][ansible-proxmox]
-and keep everything in Ansible. This would have worked, but I ran into a few
-issues. The configuration was obtuse, I could only clone templates (no iso/iPXE)
+and keep everything in Ansible. Unfortunately, the configuration was obtuse
+and I could only clone templates (no iso/iPXE).
 
 ## Cloud-init
 
-The next three all deal with the creation/configuration
-of the base image. Of these three cloud-init was my favorite. Unfortunately
+This tool and the next two all deal with the creation/configuration
+of the base image. Of these three, cloud-init was my favorite. Unfortunately,
 I was unable to get it to work in Proxmox even though it worked on a local `qemu`
 VM. I even went so far as to create a TFTP server [raincloud](https://github.com/KGB33/raincloud).
 
 ## iPXE (and netboot.xyz)
 
-These were also super cool. I ended up setting `boot.netboot.xyz` to the default
-netboot url. Eventually I could (and probably will) use cloud-init and iPXE to
+These two tools were also super cool. I ended up setting `boot.netboot.xyz` to the default
+netboot url. Eventually, I could (and probably will) use cloud-init and iPXE to
 automate the [Creating the "Template"](#creating-the-template) step.
 
 ## HashiCorp Packer
@@ -87,44 +83,43 @@ in my homelab.
 # Pre-Terraforming Work
 
 As alluded to previously, there are a few steps that
-still need to be done manually. Namely setting up the VM
+still need to be done manually - namely, setting up the VM
 to clone.
 
 ## Setting Up Storage
 
 My Proxmox cluster is pretty bare bones, so there is (was)
 no network storage. Unfortunately, when cloning a VM the new
-VM must have the same storage, i.e. a template on Host A local storage
-cannot be cloned to Host B.
+VM must have the same storage, i.e. a template on Host A's local storage
+cannot be cloned to Host B's local storage.
 
 My solution for this was to create a Ceph storage pool. I created
 it following [Deploy Hyper-Converged Ceph Cluster][proxmox-ceph],
-although I only have one Object Storage Daemons (OSD) so I had to
+although I only have one Object Storage Daemon (OSD), so I had to
 manually lower the min placement groups to one.
 
 
 ## Creating the "Template"
 
 Creating the template is super easy. Just follow the Ubuntu server
-install, just make sure to import your ssh keys! Once the installation
-is complete, remove the CD-ROM disk & reboot. When the server comes
-back up install Ansible. Shut the machine back down then it's good to go.
+install - make sure to import your ssh keys! Once the installation
+is complete, remove the CD-ROM disk and reboot. When the server comes
+back up install Ansible. Shut the machine back down and then it's good to go.
 
-> Note: You don't need to convert the VM to a template. In fact if you
+> Note: You don't need to convert the VM to a template. In fact, if you
 > don't it's easier to make changes to the base image.
 
 # Terraforming Proxmox
 
-The meat and potatoes happens here. There are
-a few import parts. To start run `terraform init`
+The meat and potatoes happens here. To start, run `terraform init`
 in the directory your Terraform code will be in.
 
 ## Defining Providers
 
 Next, you have to define what providers Terraform
-should use. You can think of providers kinda as plugins.
+should use. You can think of providers kind of like plugins.
 
-Create a file called `provider.tf` containg the following.
+Create a file called `provider.tf` containing the following:
 
 ```hcl
 terraform {
@@ -164,7 +159,7 @@ resource "resource_type" "resource_name" {
 }
 ```
 
-So my (super) truncated resource definition is below.
+So my (super) truncated resource definition is below:
 
 
 ```hcl
@@ -177,12 +172,14 @@ resource "proxmox_vm_qemu" "k8s-VMs" {
       id      = 501,
       node    = "glint"
     }
+    # ...
   }
   name        = "${each.key}.kgb33.dev"
   desc        = "K8s Node #1 \n ${each.key}.kgb33.dev \n IP: ${each.value.ip}"
   target_node = each.value.node
   clone       = "ubuntu22.04-template"
   vmid        = each.value.id
+  # ...
 }
 ```
 
@@ -213,9 +210,9 @@ variable "variable_name" {
 ```
 Then it can be used via `var.variable_name`.
 
-### Sops Aside
+### SOPS Aside
 
-There is several ways to set these variables, one of which is to
+There are several ways to set these variables, one of which is to
 use a special `terraform.tfvars` file. This is a simple text file
 in the format `variable_name = value`.
 
@@ -237,18 +234,16 @@ that could probably be automated using
 
 # Provisioners
 
-Great, now we can create VMs by cloning a template, but they
-aren't very useful. In fact they all have the same host name.
-Luckally Terraform can run "provisioners" on newly created
-resources.
-
-These provisioners are defined inside the resource block and
-are run top-to-bottom.
+Great, now we can create VMs by cloning a template, but they aren't very
+useful. In fact, they all have the same host name. Luckily, Terraform can run
+"provisioners" on newly created resources. These provisioners are defined
+inside the resource block and are run top-to-bottom.
 
 ### Connection
 
-In order for provisioners to be useful they need to be able to connect.
-Unsuprizingly the `connection` block defines this.
+In order for provisioners to be useful they need to be able to connect
+to the resource they are provisioning.
+Unsurprisingly, the `connection` block defines this.
 
 ```hcl
 resource "proxmox_vm_qemu" "k8s-VMs" {
@@ -280,7 +275,7 @@ The first provisioner I defined copies an Ansible playbook to the host.
 ```
 ### Ansible
 
-The second provisioner runs the playbook; yes, that is all on one line.
+The second provisioner runs the playbook - yes, that is all on one line.
 
 ```hcl
   # ...
@@ -292,11 +287,11 @@ The second provisioner runs the playbook; yes, that is all on one line.
   # ...
 
 ```
-An better way of running the previous two provisioners would be using
+A better way of running the previous two provisioners would be using
 `local-exec` (instead of `file` and `remote-exec`). You would create a
-`null_resource` that dependens on the "k8s-VMs" resource defined. Then the null
+`null_resource` that depends on the "k8s-VMs" resource defined. Then the null
 resource has a `local-exec` provisioner that runs the ansible playbook.
-But that sounds a project for later.
+But that sounds a project for later!
 
 ### Final Scripts
 
@@ -314,13 +309,27 @@ host.
 }
 ```
 
-This is in a different provisioner block from the latter because
-`var.become_password` is marked as sensitive, so all the output
-is redacted.
+This is in a different provisioner block from the former because
+`var.become_password` is marked as sensitive, so the `stdout` is redacted.
 
 
 # Conclusion
 
+I can now create (and destroy) several VMs in Proxmox using
+Terraform. To achieve, this I had to first do some manual setup:
+  - Created a ceph pool with a single OSD.
+  - Created a Ubuntu 22.04 base image.
+  - Added Static IP addresses.
+
+Next, I created a Terraform script that does the following:
+  - I used a `for_each` block to define each VM I want to create.
+  - Defined general VM information - node, vmid, IP, etc.
+  - Defined connection info for the provisioners.
+  - Created three provisioners that do post-creation setup.
+
+
+The complete setup (at the time of writing) can be seen in at
+[hash 05a0997](https://github.com/KGB33/ansible/tree/05a09970d19c63bcb6532b57cb85cbe52b3999bc).
 
 
 <!-- link -->
