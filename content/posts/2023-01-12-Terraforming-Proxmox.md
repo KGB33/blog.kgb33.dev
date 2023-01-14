@@ -3,7 +3,7 @@ title: "Terraforming Proxmox"
 date: 2023-01-12T12:00:00-08:00
 tags: ["terraform", "proxmox", "ansible"]
 
-draft: true
+draft: false
 ---
 
 I recently experimented automating VM creation across my
