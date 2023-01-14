@@ -316,12 +316,12 @@ This is in a different provisioner block from the former because
 # Conclusion
 
 I can now create (and destroy) several VMs in Proxmox using
-Terraform. To achieve, this I had to first do some manual setup:
-  - Created a ceph pool with a single OSD.
-  - Created a Ubuntu 22.04 base image.
-  - Added Static IP addresses.
+Terraform. To achieve this I had to first do some manual setup:
+  - Create a ceph pool with a single OSD.
+  - Create a Ubuntu 22.04 base image.
+  - Add Static IP address leases to my DHCP server.
 
-Next, I created a Terraform script that does the following:
+Next, I created a Terraform script that contains the following:
   - I used a `for_each` block to define each VM I want to create.
   - Defined general VM information - node, vmid, IP, etc.
   - Defined connection info for the provisioners.
