@@ -81,7 +81,8 @@ theme = "gruvbox"
     "yaml",
     "python",
     "sql",
-    "cue"
+    "cue",
+    "hcl"
   ]
   plugins = [
     "normalize-whitespace",
