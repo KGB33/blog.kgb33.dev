@@ -3,7 +3,7 @@ title: "Gitting There on Argos"
 date: 2023-04-10T12:00:00-08:00
 tags: ["ArgoCD", "k8s", "GitOps"]
 
-draft: false
+draft: true
 ---
 
 > Once more they lifted sails, and once more they took the Argo into the open

@@ -1,9 +1,9 @@
 ---
 title: "Playing in Traefik"
-date: 2023-04-10T12:00:00-08:00
+date: 2023-04-17T12:00:00-08:00
 tags: ["traefik", "k8s"]
 
-draft: false
+draft: true
 ---
 
 > TODO: Quote
