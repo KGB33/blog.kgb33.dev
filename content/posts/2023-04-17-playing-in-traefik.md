@@ -23,6 +23,7 @@ The other parts can be found as follows:
 
 - [Introduction](#introduction)
 - [MetalLB Precursor](#metallb-precursor)
+  - [Interface Configuration](#interface-configuration)
 - [Traefik](#traefik)
   - [Traefik Configuration](#traefik-configuration)
   - [Blog Ingress](#blog-ingress)
@@ -93,6 +94,22 @@ twitch.kgb33.dev         ether   22:d4:92:84:f1:11   C                     eth2
 In this case metalLB responded on the same node that the pod was running on.
 However, in some cases these will be different nodes, and the request will pass
 between them using `kube-proxy` (or cilium in this case).
+
+## Interface Configuration
+
+To properly route traffic over different interfaces the `10.0.8.0/24`
+the `10.0.8.1/24` address had to be added to the interface configuration.
+
+```
+interfaces {
+    ethernet eth2 {
+        address 10.0.0.1/24
+        address 10.0.8.1/24
+        description homelab
+        hw-id 00:e2:69:4f:f3:5c
+    }
+}
+```
 
 # Traefik
 
@@ -170,6 +187,15 @@ definition is below.
 
 Notice the `cloudflare-api-token` secret is passed to the pod as an environment
 variable. This allows the ACME provider to use it and authenticate with Cloudflare.
+
+Lastly, the `WebService` definition reserves an IP address from the metallb pool
+using a annotation.
+
+```yaml
+metadata:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.0.8.138
+```
 
 ## Blog Ingress
 
