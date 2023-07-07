@@ -61,7 +61,7 @@
     "postcss-url": "^10.1.3",
     "prettier": "^2.7.1",
     "prettier-plugin-go-template": "^0.0.13",
-    "stylelint": "^14.1.0",
+    "stylelint": "^15.10.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-prettier": "^2.0.0"
   },
