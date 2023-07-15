@@ -1,6 +1,7 @@
 # Hugo
 public/
 *.lock
+!flake.lock
 _gen/
 hugo_stats.json
 

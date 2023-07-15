@@ -1,0 +1,59 @@
+{
+  "nodes": {
+    "daggerCue": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-sb1T6hEDU4juxfBJdkDYlIjvf7bTQQO/qfegESgHCNc=",
+        "path": "/nix/store/9rlx1im58mkahhhm05f7w7895hlndjhy-source/dagger-cue",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/9rlx1im58mkahhhm05f7w7895hlndjhy-source/dagger-cue",
+        "type": "path"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1689282004,
+        "narHash": "sha256-VNhuyb10c9SV+3hZOlxwJwzEGytZ31gN9w4nPCnNvdI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e74e68449c385db82de3170288a28cd0f608544f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1689282004,
+        "narHash": "sha256-VNhuyb10c9SV+3hZOlxwJwzEGytZ31gN9w4nPCnNvdI=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e74e68449c385db82de3170288a28cd0f608544f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "daggerCue": "daggerCue",
+        "nixpkgs": "nixpkgs_2"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
