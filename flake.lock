@@ -6,12 +6,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-sb1T6hEDU4juxfBJdkDYlIjvf7bTQQO/qfegESgHCNc=",
-        "path": "/nix/store/9rlx1im58mkahhhm05f7w7895hlndjhy-source/dagger-cue",
+        "narHash": "sha256-ogcpPSD87WL3hsii2PFi1plKFS5z/pyZaFNgWiX1Iw4=",
+        "path": "/nix/store/ybkx9cc6xm1ssfgh7n3kfbjnnkc2cvmv-source/dagger-cue",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/9rlx1im58mkahhhm05f7w7895hlndjhy-source/dagger-cue",
+        "path": "/nix/store/ybkx9cc6xm1ssfgh7n3kfbjnnkc2cvmv-source/dagger-cue",
         "type": "path"
       }
     },
