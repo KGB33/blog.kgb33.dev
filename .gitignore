@@ -13,3 +13,4 @@ cue.mod/
 
 # ENV
 .envrc
+.direnv
