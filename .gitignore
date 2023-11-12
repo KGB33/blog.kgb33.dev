@@ -10,6 +10,8 @@ node_modules/
 
 # Dagger
 cue.mod/
+sdk/
+.venv/
 
 # ENV
 .envrc

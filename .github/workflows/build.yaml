@@ -20,15 +20,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: "Callout to dagger"
-        uses: dagger/dagger-for-github@v3
-        env:
-          GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # Use buildkit's gha cache support
-          # Watch https://github.com/dagger/dagger-for-github/issues/39
-          # for cache support being built-into the dagger-action
-          cmds: |
-            project init
-            project update
-            do --cache-from type=gha --cache-to type=gha publish
+      - name: Install Dagger CLI
+        run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | sh; cd -; }
+      - name: Run Dagger pipeline
+        run: dagger call --mod dagger/ publish --dir . --token ${{ secrets.GITHUB_TOKEN }}
