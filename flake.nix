@@ -24,6 +24,8 @@
           hugo
           nodejs # npm
           git
+          black
+          go
         ];
       };
     }
