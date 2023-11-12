@@ -2,28 +2,32 @@
   description = "Nix-flake-based Hugo envionment";
 
   inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    daggerCue.url = "./dagger-cue/";
+    dagger = {
+      url = "github:dagger/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, daggerCue, ... }:
+  outputs = { self, nixpkgs, flake-utils, dagger, ... }:
+    flake-utils.lib.eachDefaultSystem ( system:
     let
-      system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
       };
-      dagger-cue = daggerCue.defaultPackage.${system};
     in
     {
-      devShells."${system}".default = pkgs.mkShell {
-        packages = with pkgs; [
-          cue
-          dagger
-          dagger-cue
+      devShells.default = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          dagger.packages.${system}.dagger
           hugo
           nodejs # npm
           git
+          black
+          go
         ];
       };
-    };
+    }
+    );
 }
