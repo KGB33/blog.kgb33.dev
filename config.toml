@@ -1,16 +1,22 @@
 baseURL = 'https://blog.kgb33.dev'
 languageCode = 'en-us'
 title = ""
-theme = "gruvbox"
+# theme = "gruvbox"
+
+[markup]
+  # (Optional) To be able to use all Prism plugins, the theme enables unsafe
+  # rendering by default
+  _merge = "deep"
 
 [build]
   # The theme enables writeStats which is required for PurgeCSS
   _merge = "deep"
 
+# This hopefully will be simpler in the future.
 # See: https://github.com/schnerring/hugo-theme-gruvbox/issues/16
 [module]
   [[module.imports]]
-    path = "github.com/schnerring/hugo-mod-github-readme-stats"
+    path = "github.com/schnerring/hugo-theme-gruvbox"
   [[module.imports]]
     path = "github.com/schnerring/hugo-mod-json-resume"
     [[module.imports.mounts]]
@@ -51,11 +57,6 @@ theme = "gruvbox"
     source = "node_modules/@tabler/icons/icons"
     target = "assets/tabler-icons"
 
-[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true # used for in-line prismjs
-
 [params]
   avatar = "/images/avatar.jpg"
   author = "Kelton Bassingthwaite"
@@ -71,18 +72,20 @@ theme = "gruvbox"
 [params.prism]
   # https://prismjs.com/#supported-languages
   languages = [
-    "markup",
-    "css",
-    "clike",
-    "javascript",
     "bash",
+    "clike",
+    "css",
+    "cue",
     "diff",
-    "toml",
-    "yaml",
+    "hcl",
+    "javascript",
+    "json",
+    "markup",
+    "nix",
     "python",
     "sql",
-    "cue",
-    "hcl"
+    "toml",
+    "yaml",
   ]
   plugins = [
     "normalize-whitespace",
