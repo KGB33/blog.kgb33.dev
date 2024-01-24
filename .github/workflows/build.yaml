@@ -23,4 +23,4 @@ jobs:
       - name: Install Dagger CLI
         run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.9.7 sh; cd -; }
       - name: Run Dagger pipeline
-        run: dagger call --mod ci/ publish --dir . --token ${{ secrets.GITHUB_TOKEN }}
+        run: dagger call --mod ci/ publish --dir . --token cmd:'echo -n ${{ secrets.GITHUB_TOKEN }}'
