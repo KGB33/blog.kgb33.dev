@@ -419,6 +419,6 @@ Then checkout <https://blog.kgb33.dev>!
 [theme-json-resume]: https://github.com/schnerring/hugo-mod-json-resume
 [json-resume]: https://jsonresume.org/
 [pre-commit]: https://pre-commit.com/
-[pipx]: https://pypa.github.io/pipx/
+[pipx]: https://pipx.pypa.io/stable/
 [actions-md-link]: https://github.com/gaurav-nelson/github-action-markdown-link-check
 [certbot-docs]: https://certbot.eff.org/

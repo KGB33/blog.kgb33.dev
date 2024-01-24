@@ -87,6 +87,6 @@ version: 3.7.3
 
 <!-- links -->
 [sops-repo]: https://github.com/mozilla/sops
-[sops-diff]: https://github.com/mozilla/sops/blame/master/example.yaml
+[sops-diff]: https://github.com/getsops/sops/blame/main/example.yaml
 
 [age-repo]: https://github.com/FiloSottile/age

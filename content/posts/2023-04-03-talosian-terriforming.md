@@ -46,7 +46,7 @@ Talos for three reasons, it's easily configured, it's under active
 development, and Sidero Labs provides ARM builds.
 
 > Note: A few months ago I wrote about using [Terraform to provision Ubuntu
-> 22.04 VMs](posts/2023-01-12-terraforming-proxmox/). Using Talos instead
+> 22.04 VMs](/posts/2023-01-12-terraforming-proxmox/). Using Talos instead
 > allows the re-creation of the environment to be much faster and repeatable.
 > For example, creating the six u22.04 VMs took about 30 mins, it takes just
 > under one minute to create the talos VMs.

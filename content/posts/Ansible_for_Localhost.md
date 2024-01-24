@@ -387,7 +387,7 @@ See [here][atlassian-dotfiles] for a more in-depth tutorial.
         /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 ```
 <!-- Links -->
-[ansible-playbook]: https://github.com/KGB33/ansible/tree/main/playbooks/local
+[ansible-playbook]: https://github.com/KGB33/homelab/tree/bde2686551cbfc0a45c7fe9f1576bdc65582702a/playbooks/local
 [arch-wiki-ansible]: https://wiki.archlinux.org/title/Ansible#Package_management
 
 [ansible-pacman]: https://docs.ansible.com/ansible/latest/collections/community/general/pacman_module.html

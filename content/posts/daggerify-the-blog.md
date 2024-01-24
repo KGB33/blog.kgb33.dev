@@ -433,7 +433,7 @@ dagger.#Plan & {
 [dagger]: https://dagger.io/
 [dagger-img-conf]: https://github.com/dagger/dagger/blob/7dbe4e9aa5da61d1ea2f5b12005812ff617a7ff5/pkg/dagger.io/dagger/image.cue#L12
 [dagger-plan]: https://docs.dagger.io/1202/plan
-[dagger-uni-go]: https://github.com/dagger/dagger/tree/main/pkg/universe.dagger.io/go
-[dagger-uni-git]: https://github.com/dagger/dagger/tree/main/pkg/universe.dagger.io/git
+[dagger-uni-go]: https://github.com/dagger/dagger/tree/v0.2.36/pkg/universe.dagger.io/go
+[dagger-uni-git]: https://github.com/dagger/dagger/tree/v0.2.36/pkg/universe.dagger.io/git
 [dagger-gh-issue-1532]: https://github.com/dagger/dagger/issues/1532
 [cue-disjunction]: https://cuelang.org/docs/tutorials/tour/types/disjunctions/
