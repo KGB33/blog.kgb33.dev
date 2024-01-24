@@ -13,7 +13,7 @@ ENTRY_POINT = [
 
 @function
 def prod(dir: dagger.Directory) -> dagger.Container:
-    return build(dir).with_entrypoint(ENTRY_POINT).with_default_args()
+    return build(dir).with_entrypoint(ENTRY_POINT).without_default_args()
 
 
 @function
