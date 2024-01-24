@@ -1,9 +1,14 @@
-import os
-
 import dagger
-from dagger.mod import function
+from dagger import function, dag
 
-ENTRY_POINT = ["/bin/hugo", "server", "--bind=0.0.0.0"]
+ENTRY_POINT = [
+    "/bin/hugo",
+    "server",
+    "--bind=0.0.0.0",
+    "--baseURL=https://blog.kgb33.dev/",
+    "--appendPort=false",
+    "--disableLiveReload=true",
+]
 
 
 @function
@@ -31,7 +36,7 @@ async def publish(dir: dagger.Directory, token: dagger.Secret) -> str:
 @function
 def build(dir: dagger.Directory) -> dagger.Container:
     return (
-        dagger.wolfi()
+        dag.wolfi()
         .base()
         .with_packages(["go", "git", "npm", "nodejs"])
         .container()
@@ -62,7 +67,7 @@ def build(dir: dagger.Directory) -> dagger.Container:
 @function
 def hugo_extended(tag: str = "latest") -> dagger.File:
     return (
-        dagger.wolfi()
+        dag.wolfi()
         .base()
         .with_package("go")
         .container()

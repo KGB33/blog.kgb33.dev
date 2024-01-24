@@ -26,6 +26,7 @@
           git
           black
           go
+          pre-commit
         ];
       };
     }

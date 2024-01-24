@@ -1,0 +1,7 @@
+{
+  "name": "blog-build",
+  "sdk": "python",
+  "dependencies": [
+    "github.com/shykes/daggerverse/wolfi@3d43167457b0de8c8929a9de411480daddddab7f"
+  ]
+}

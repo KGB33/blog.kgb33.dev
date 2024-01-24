@@ -16,3 +16,6 @@ sdk/
 # ENV
 .envrc
 .direnv
+
+# Dagger
+/sdk
