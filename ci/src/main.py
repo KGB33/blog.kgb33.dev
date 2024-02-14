@@ -13,19 +13,25 @@ ENTRY_POINT = [
 
 @function
 def prod(dir: dagger.Directory) -> dagger.Container:
+    """
+    Builds a production-ready container.
+    """
     return build(dir).with_entrypoint(ENTRY_POINT).without_default_args()
 
 
 @function
 async def run(dir: dagger.Directory) -> dagger.Service:
     """
-    Example: `dagger up run --dir ...`
+    Runs the blog locally.
     """
     return build(dir).with_exec(ENTRY_POINT).as_service()
 
 
 @function
 async def publish(dir: dagger.Directory, token: dagger.Secret) -> str:
+    """
+    Publishes the production ready container to ghcr.io/kgb33/blog.kgb33.dev.
+    """
     return await (
         prod(dir)
         .with_registry_auth("ghcr.io", "KGB33", token)
@@ -35,6 +41,9 @@ async def publish(dir: dagger.Directory, token: dagger.Secret) -> str:
 
 @function
 def build(dir: dagger.Directory) -> dagger.Container:
+    """
+    Builds a debug-ready, tty-ready, contianer.
+    """
     return (
         dag.wolfi()
         .base()
@@ -64,7 +73,6 @@ def build(dir: dagger.Directory) -> dagger.Container:
     )
 
 
-@function
 def hugo_extended(tag: str = "latest") -> dagger.File:
     return (
         dag.wolfi()
