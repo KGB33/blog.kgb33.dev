@@ -64,7 +64,7 @@ title = ""
   subtitle = ""
   defaultTheme = "dark"
   themeColor = "green"
-  mainSections = ['posts', 'notes', 'TiL']
+  mainSections = ['posts', 'notes']
 
 [params.logo]
   text = "reader@blog"
@@ -104,12 +104,6 @@ identifier = "posts"
 name = "Posts"
 url = "/posts/"
 weight = 10
-
-[[menu.main]]
-identifier = "TiL"
-name = "TiL"
-url = "/TiL/"
-weight = 20
 
 [[menu.main]]
 identifier = "notes"
