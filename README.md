@@ -3,6 +3,10 @@
 The source for my [Hugo](https://github.com/gohugoio/hugo) based blog. Theme by
 [Scherring](https://github.com/schnerring/hugo-theme-gruvbox).
 
+# Running in Production
+
+See the ArgoCD config [here](https://github.com/KGB33/homelab/tree/main/k8s-apps/blog-kgb33-dev)
+
 # Running Locally
 
 The blog is containerized using [Dagger](https://github.com/dagger/dagger).
