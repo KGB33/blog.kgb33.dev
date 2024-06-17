@@ -1,8 +1,8 @@
 module blog.kgb33.dev
 
-go 1.21.4
+go 1.22.4
 
 require (
-	github.com/schnerring/hugo-mod-json-resume v0.0.0-20231111160416-949fadf4da72 // indirect
-	github.com/schnerring/hugo-theme-gruvbox v0.0.0-20231107133328-95543490092f // indirect
+	github.com/schnerring/hugo-mod-json-resume v0.0.0-20240616035611-f5187746868a // indirect
+	github.com/schnerring/hugo-theme-gruvbox v0.0.0-20240611221432-331b95430171 // indirect
 )
