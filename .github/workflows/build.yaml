@@ -25,3 +25,5 @@ jobs:
         run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.18.10 sh; cd -; }
       - name: Run Dagger pipeline
         run: dagger call publish --token env://GITHUB_TOKEN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
