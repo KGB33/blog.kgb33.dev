@@ -1,64 +1,68 @@
-# [blog.kgb33.dev](https://blog.kgb33.dev/)
+# Astro Starter Kit: Blog
 
-The source for my [Hugo](https://github.com/gohugoio/hugo) based blog. Theme by
-[Scherring](https://github.com/schnerring/hugo-theme-gruvbox).
-
-# Running in Production
-
-See the ArgoCD config [here](https://github.com/KGB33/homelab/tree/main/k8s-apps/blog-kgb33-dev)
-
-# Running Locally
-
-The blog is containerized using [Dagger](https://github.com/dagger/dagger).
-To run locally, use `dagger -m ci call run --dir . up`:
-
-```
-❯ dagger -m ci call run --dir . up
-✔ Service.up: Void 18.4s
-┃ 1313/TCP: tunnel 0.0.0.0:1313 -> o3431l4qpguf0.p35ol4b6ulvlg.dagger.local:1313
-  ✔ start /bin/hugo server --bind=0.0.0.0 --baseURL=https://blog.kgb33.dev/ --appendPort=false --disableLiveReload=true 18.5
-  ┃ Watching for changes in /blog/{archetypes,content,data,node_modules,package.hugo.json,package.json,static}
-  ┃ Watching for config changes in /blog/config.toml, /blog/go.mod
-  ┃ Start building sites …
-  ┃ hugo v0.122.0+extended linux/amd64 BuildDate=unknown
-  ┃
-  ┃
-  ┃                    | EN  | DE
-  ┃ -------------------+-----+-----
-  ┃   Pages            | 122 |  7
-  ┃   Paginator pages  |   7 |  0
-  ┃   Non-page files   |   0 |  0
-  ┃   Static files     |  70 | 70
-  ┃   Processed images |   0 |  0
-  ┃   Aliases          |  51 |  3
-  ┃   Sitemaps         |   2 |  1
-  ┃   Cleaned          |   0 |  0
-  ┃
-  ┃ Built in 1036 ms
-  ┃ Environment: "development"
-  ┃ Serving pages from memory
-  ┃ Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
-  ┃ Web Server is available at https://blog.kgb33.dev/ (bind address 0.0.0.0)
-  ┃ Press Ctrl+C to stop
-
-Canceled
+```sh
+bun create astro@latest -- --template blog
 ```
 
-Additional CI/CD options are viewable under `dagger -m ci functions`.
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
+[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
 
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+
+![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+
+Features:
+
+- ✅ Minimal styling (make it your own!)
+- ✅ 100/100 Lighthouse performance
+- ✅ SEO-friendly with canonical URLs and OpenGraph data
+- ✅ Sitemap support
+- ✅ RSS Feed support
+- ✅ Markdown & MDX support
+
+## 🚀 Project Structure
+
+Inside of your Astro project, you'll see the following folders and files:
+
+```text
+├── public/
+├── src/
+│   ├── components/
+│   ├── content/
+│   ├── layouts/
+│   └── pages/
+├── astro.config.mjs
+├── README.md
+├── package.json
+└── tsconfig.json
 ```
-❯ dagger -m ci functions
-✔ dagger functions [0.00s]
-┃ Name      Description
-┃ build     Builds a debug-ready, tty-ready, contianer.
-┃ prod      Builds a production-ready container.
-┃ publish   Publishes the production ready container to ghcr.io/kgb33/blog.kgb33.dev.
-┃ run       Runs the blog locally.
-• Engine: 0d1b8c03cfe2 (version v0.9.7)
-⧗ 2.64s ✔ 193 ∅ 42
-```
 
-# Contributing
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-Comments and Corrections - in the form of GitHub issues - are greatly
-encouraged. However, PRs are not encouraged, all the content on my blog is mine.
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+
+The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+
+Any static assets, like images, can be placed in the `public/` directory.
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `bun install`             | Installs dependencies                            |
+| `bun dev`             | Starts local dev server at `localhost:4321`      |
+| `bun build`           | Build your production site to `./dist/`          |
+| `bun preview`         | Preview your build locally, before deploying     |
+| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `bun astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Credit
+
+This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).

@@ -19,8 +19,9 @@ jobs:
       - name: "Check out"
         uses: actions/checkout@v2
         with:
+          lfs: true
           fetch-depth: 0
       - name: Install Dagger CLI
-        run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.15.4 sh; cd -; }
+        run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.18.10 sh; cd -; }
       - name: Run Dagger pipeline
-        run: dagger call --mod ci/ publish --dir . --token cmd:'echo -n ${{ secrets.GITHUB_TOKEN }}'
+        run: dagger call publish --token env://GITHUB_TOKEN

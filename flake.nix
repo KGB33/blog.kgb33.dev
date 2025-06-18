@@ -21,12 +21,10 @@
       devShells.default = pkgs.mkShell {
         buildInputs = with pkgs; [
           dagger.packages.${system}.dagger
-          hugo
-          nodejs # npm
+          bun
+          caddy
           git
-          black
           go
-          pre-commit
         ];
       };
     }
