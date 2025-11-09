@@ -3,7 +3,7 @@ title: "Packaging Rust programs with Nix"
 pubDate: "2025-06-28"
 tags: ["nix", "rust"]
 
-draft: true
+draft: false
 ---
 
 <!-- 
@@ -24,90 +24,110 @@ Rough outline:
     - Script sharing
 -->
 
-# Intro
-
-I'm Kel
-
 # What is Nix? 
 
-Nix is a reproducible, declarative package manager; which is configured using a
-functional programming language (also called Nix).
-
-The programming language defines **derivations** (basically big JSON files) as
-the result of a pure function. The package manager will then take these
-derivations and **realize** into *something* - not necessarily a package.
+Nix is a functional DSL designed to define **derivations** from a set of
+inputs. The implementation (also called `nix`) then **realizes** these
+derivations into artifacts.
 
 ---
 
-
-A `flake.nix` file is used to collect and expose those functions as outputs. As
-well as define the inputs. Additionally, `flake.lock` file is used to pin inputs.
-
-The below flake has:
-  - An input: The `nixpkgs` repository, containing "over 120,000" pre-packaged programs.
-  - Two outputs: the `hello` package twice.
+# Nix Crash Course
 
 ```nix
-{
-  description = "A very basic flake";
+# crashCourse.nix
+{...}: let
+  # Variables are defined in let-in blocks
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-  };
-
-  outputs = {
-    self,
-    nixpkgs,
-  }: {
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
+  # All functions are unary, but attr sets can be unpacked.
+  # The `...` ignores other attributes (if any)
+  mult = {x, y ? 2, ...}: x * y;
+  tripler = x: mult { x = x; y = 3;};
+in {
+  # Parentheses are not needed when calling functions.
+  doubled = mult {x = 4;};
+  tripled = tripler 6;
+  # But are still used to group expressions
+  quadrupled = (x: mult {x = x; y = 4}) 2;
+  
+  # An "attribute set" is the basic building block for
+  # all nix expressions.
+  bar = {
+    thisIs = "an attr set";
+    somePath = ./src/main.rs;
+    lists = ["are" "space" "seperated"];
   };
 }
 ```
 
-> [!QUESTION] Why might we have to specify what system (`x86_64-linux`) this package is for?
+---
+
+# How Do I use it
+
+A common 'entry-point' for a nix expression is a "nix flake".
+
+> Nix flakes provide a standard way to write Nix expressions (and therefore
+> packages) whose dependencies are version-pinned in a lock file. [...] A flake
+> refers to a file-system tree whose root directory contains the Nix file
+> specification called `flake.nix`.
 
 ---
 
-The `nix` cli acts as a bridge between the nix code and the nix package manager
-(which runs as a daemon). 
+# Flake Overview
+
+A flake has four sections, `description`, `inputs`, `outputs`, `nixConfig`.
+
+Anything and everything (except the file-system tree containing the
+flake**) that is used in the flake must be in the inputs attribute.
+
+`outputs` is a function that takes the inputs as parameters and returns an attribute set.
+This attribute set has several standard attributes, the most common is `packages`.
+
+```nix
+{
+  description = "A super basic Flake";
+
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+  outputs = {self, ...} @ inputs: {
+    packages.x86_64-linux.default = inputs.nixpkgs.legacyPackages.x86_64-linux.hello;
+  };
+}
+
+```
+
+---
+
+The `nix` cli acts as a bridge between flakes and the daemon.
 
 To view the inputs of a flake, use `nix flake metadata`
 
 ```shell
 ❯ nix flake metadata
-Resolved URL:  git+file:///home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk
-Locked URL:    git+file:///home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk?rev=9a378ab5123c55641d63341e63a55fe75d7699bc
-Description:   A very basic flake
-Path:          /nix/store/rqw1gz6jrwpc5jbi1082hc0f72z19fc8-source
-Revision:      9a378ab5123c55641d63341e63a55fe75d7699bc
-Revisions:     1
-Last modified: 2025-07-04 08:26:51
-Fingerprint:   9263f16417d59d5989f774ee4630d4620bf0f3190c9d8a549ba2a46e9197b80d
+Resolved URL:  path:/home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk
+Locked URL:    path:/home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk?lastModified=1761015353&narHash=sha256-Uvz%2BKBBeVB3pDvLOqrVTVx2LAovp3/x3XEKVXSXxcM0%3D
+Description:   A super basic Flake
+Path:          /nix/store/r9r47ax0frr24ny7c436qjlr9f3s8lb1-source
+Last modified: 2025-10-20 19:55:53
 Inputs:
-└───nixpkgs: github:nixos/nixpkgs/3016b4b15d13f3089db8a41ef937b13a9e33a8df?narHash=sha256-P/SQmKDu06x8yv7i0s8bvnnuJYkxVGBWLWHaU%2Btt4YY%3D (2025-06-30 08:19:38)
+└───nixpkgs: github:nixos/nixpkgs/5e2a59a5b1a82f89f2c7e598302a9cacebb72a67?narHash=sha256-K5Osef2qexezUfs0alLvZ7nQFTGS9DL2oTVsIXsqLgs%3D (2025-10-19 12:55:10)
 ```
 
-
----
-
-
-To view details on a flake, use `nix flake show`.
+To view the outputs of a flake, use `nix flake show`.
 
 ```shell
 ❯ nix flake show
-git+file:///home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk?rev=9a378ab5123c55641d63341e63a55fe75d7699bc
+path:/home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk?lastModified=1761015353&narHash=sha256-Uvz%2BKBBeVB3pDvLOqrVTVx2LAovp3/x3XEKVXSXxcM0%3D
 └───packages
     └───x86_64-linux
-        ├───default: package 'hello-2.12.2'
-        └───hello: package 'hello-2.12.2'
+        └───default: package 'hello-2.12.2'
 ```
 
-> Question: Why doesn't this provide `hello` for MacOS? How would you add it?
 
 ---
 
-To actually use the outputs, use `nix run` or `nix build` or `nix shell`.
+To actually use the outputs, use `nix run` or `nix build` or `nix shell` -
+depending on the output and what you want to do with it.
 
 ```shell
 ❯ nix run
@@ -130,295 +150,467 @@ Hello, world!
 Hello, world!
 ```
 
-# Basic Packaging
+---
 
-Before we get to packaging a rust project, let's do a super simple bash script.
+# DevShells
 
-```bash
-#!/bin/sh
-echo Hello from my cool script!
-```
+Before we can create a new rust project for us to package, we need to install Cargo.
+
+Nix provides a way to declaratively create a development shell using the `devShells` output.
 
 ```nix
 {
-  description = "A basic flake that packages a bash script";
+  description = "A super basic Flake";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Grab a package that makes defining flake outputs for multiple systems easier
-    flake-utils.url = "github:numtide/flake-utils";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+  outputs = {self, ...} @ inputs: let
+    system = "x86_64-linux";
+    pkgs = import inputs.nixpkgs {inherit system;};
+  in {
+    packages."${system}".default = pkgs.hello;
+
+    devShells."${system}".default = pkgs.mkShell {
+      packages = with pkgs; [cargo llvm];
+    };
   };
-
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-  }:
-  # This is basically a for-each loop. It lets us define the
-  # output for each system once, in the same way, for every system.
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      name = "my-cool-bash-script";
-    in {
-      packages = {
-        default = pkgs.stdenv.mkDerivation {
-          pname = name;
-          version = "1.0.0";
-
-          # cleanSource is a function that removes common
-          # temporary and version control files
-          src = pkgs.lib.cleanSource ./.;
-          # Note paths are a type.   ^^^
-
-          # Technically, we don't need this.
-          # The script shebang uses the system bash, and bash 
-          # is included in the installPhase. 
-          buildInputs = [pkgs.bash];
-
-          installPhase = ''
-            mkdir -p $out/bin
-            cp ${name}.sh $out/bin/${name}
-            chmod +x $out/bin/${name}
-          '';
-        };
-      };
-    });
 }
 ```
+
+Now, our flake output shows the development shell, and we can activate it using `nix develop`.
+
+```
+❯ nix flake show
+warning: Git tree '/home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk' is dirty
+git+file:///home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk
+├───devShells
+│   └───x86_64-linux
+│       └───default: development environment 'nix-shell'
+└───packages
+    └───x86_64-linux
+        └───default: package 'hello-2.12.2'
+
+
+❯ nix develop
+```
+
+> [!TIP] Use Direnv to keep your shell / status line. Nix devShells use bash by default.
+
 
 ---
 
-There is a better, more succinct way to package bash scripts though. 
+# The Rust Package
 
-```nix
-{
-  description = "A basic flake that packages a bash script";
+We're going to keep the rust package simple, just the default hello world from
+`cargo init`.
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-  };
 
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-  }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      myScript = pkgs.writeShellApplication {
-        name = "my-cool-bash-script";
-        runtimeInputs = with pkgs; [gum];
-        # We could read the script from a file
-        # text = pkgs.builtins.readFile ./my-cool-bash-script.sh
-        text = ''
-          gum style \
-            --foreground 2 --border-foreground 1 --border double \
-            --align center --width 5 --margin "1 2" --padding "2 4" \
-            'Hello SRUG'
-        '';
-      };
-    in {
-      packages = {
-        default = myScript;
-      };
-    });
-}
+```shell
+❯ cargo run
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/nix-talk`
+Hello, world!
 ```
 
-Here the helper function `writeShellApplication` takes a set of inputs and
-builds a shell application. It takes care of setting the shebang, sensible
-shell settings, and we can include anything in nixpkgs as a dependency. It will
-even run ShellCheck on it.
-
-The generated script (via `nix build`) is:
-
-```bash
-#!/nix/store/gkwbw9nzbkbz298njbn3577zmrnglbbi-bash-5.3p0/bin/bash
-set -o errexit
-set -o nounset
-set -o pipefail
-
-export PATH="/nix/store/ghqbmfsmdhccms652yx3n0mkj86jlz8r-gum-0.16.2/bin:$PATH"
-
-gum style \
-  --foreground 2 --border-foreground 1 --border double \
-  --align center --width 5 --margin "1 2" --padding "2 4" \
-  'Hello SRUG'
-```
-
-> [!CAUTION] Note the absolute paths to `bash` and `gum`.
-> This script will only work on systems its been realized on.
+---
 
 # What about Rust?
 
-Just like bash scripts, Rust programs have easy to use build tools. To start, we can use the buildin 
-`buildRustPackage` function.
+Nix has a builtin `buildRustPackage` function, we just need to pass the name,
+version, source, and `Cargo.lock`.
 
 ```nix
 {
-  description = "A simple Crane flake";
+  description = "A super basic Flake";
+
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+  outputs = {self, ...} @ inputs: let
+    system = "x86_64-linux";
+    pkgs = import inputs.nixpkgs {inherit system;};
+
+    srugNix = pkgs.rustPlatform.buildRustPackage {
+      pname = "srug-nix";
+      version = "v0.1.0";
+
+      src = pkgs.lib.cleanSource ./.;
+      cargoLock.lockFile = ./Cargo.lock;
+    };
+  in {
+    packages."${system}".default = srugNix;
+
+    devShells."${system}".default = pkgs.mkShell {
+      packages = with pkgs; [cargo llvm];
+    };
+  };
+}
+```
+---
+
+Now, let's (try to) run our program using nix: 
+
+```
+❯ nix run
+warning: Git tree '/home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk' is dirty
+error:
+       …(stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: path '/nix/store/4nr2b0q3z3a6bvqhjglxb2wlbl2habwy-source/Cargo.lock' does not exist
+
+❯ ls /nix/store/4nr2b0q3z3a6bvqhjglxb2wlbl2habwy-source/
+ flake.lock   flake.nix
+
+❯ ls .
+󰣞 src   target   Cargo.lock   Cargo.toml   flake.lock   flake.nix
+```
+
+As part of Nix's functional purity, only files tracked in Git are copyed into
+the store, so as far as Nix is concerned, `Cargo.lock` doesn't exist.
+
+```
+❯ git add --intent-to-add Cargo.* src/main.rs
+
+❯ nix run
+warning: Git tree '/home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk' is dirty
+Hello, world!
+```
+
+🎉🎉
+
+---
+
+There are also third party libraries that make more advanced programs easier to package.
+
+My preference is [ipelkov/crane](https://github.com/ipetkov/crane). To use it,
+we just need to add it as an input, and update the contents of the `let-in`
+block:
+
+```nix
+{
+  description = "A super basic Flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    crane.url = "github:ipetkov/crane";
+  };
+
+  outputs = {self, ...} @ inputs: let
+    system = "x86_64-linux";
+    pkgs = import inputs.nixpkgs {inherit system;};
+
+    crane = inputs.crane.mkLib pkgs;
+
+    src = crane.cleanCargoSource ./.;
+
+    commonArgs = {
+      inherit src;
+    };
+
+    cargoArtifacts = crane.buildDepsOnly commonArgs;
+
+    srugNix = crane.buildPackage (
+      commonArgs // {inherit cargoArtifacts;}
+    );
+  in {
+    packages."${system}".default = srugNix;
+
+    devShells."${system}".default = pkgs.mkShell {
+      packages = with pkgs; [cargo llvm];
+    };
+  };
+}
+```
+
+---
+
+There are a few upgrades over `buildRustPackage` already. 
+
+`src = crane.cleanCargoSource ./.;` is specialized for Cargo repositories, so
+less unneeded files are copied into the store. 
+
+
+`cargoArtifacts = crane.buildDepsOnly commonArgs;` builds all (zero) of our
+dependencies separate step, so they will not be recompiled every build.
+
+Additionally, Crane allows us to easily map CI style checks to our third flake output: `checks`.
+
+---
+
+```nix
+{
+  inputs = {...};
+
+  outputs = {self, ...} @ inputs: let
+    ...
+  in {
+    packages."${system}".default = srugNix;
+
+    devShells."${system}".default = pkgs.mkShell {
+      packages = with pkgs; [cargo llvm];
+    };
+
+    checks."${system}" = {
+      inherit srugNix;
+
+      clippy = crane.cargoClippy (
+        commonArgs
+        // {
+          inherit cargoArtifacts;
+          cargoClippyExtraArgs = "--all-targets -- --deny warnings";
+        }
+      );
+
+      fmt = crane.cargoFmt {
+        inherit src;
+      };
+    };
+  };
+}
+```
+
+Now, after adding an used variable to `src/main.rs`, we can run `nix flake check`:
+
+```
+❯ nix flake show
+git+file:///home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk?ref=refs/heads/main&rev=71365e62ae101ebb1828444d22ea07e6be8514b5
+├───checks
+│   └───x86_64-linux
+│       ├───clippy: derivation 'srug-nix-clippy-0.1.0'
+│       ├───fmt: derivation 'srug-nix-fmt-0.1.0'
+│       └───srugNix: derivation 'srug-nix-0.1.0'
+├───devShells
+│   └───x86_64-linux
+│       └───default: development environment 'nix-shell'
+└───packages
+    └───x86_64-linux
+        └───default: package 'srug-nix-0.1.0'
+
+❯ nix flake check
+error: builder for '/nix/store/y7rxcz3f5f355d57rd9l99z7a1ryr8nm-srug-nix-clippy-0.1.0.drv' failed with exit code 101;
+       last 25 log lines:
+       > +++ command cargo clippy --release --locked --all-targets -- --deny warnings
+       >     Checking srug-nix v0.1.0 (/build/source)
+       > error: unused variable: `unused_var`
+       >  --> src/main.rs:2:13
+       >   |
+       > 2 |     let mut unused_var = "abc";
+       >   |             ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_unused_var`
+       >   |
+       >   = note: `-D unused-variables` implied by `-D warnings`
+       >   = help: to override `-D warnings` add `#[allow(unused_variables)]`
+       >
+       > error: variable does not need to be mutable
+       >  --> src/main.rs:2:9
+       >   |
+       > 2 |     let mut unused_var = "abc";
+       >   |         ----^^^^^^^^^^
+       >   |         |
+       >   |         help: remove this `mut`
+       >   |
+       >   = note: `-D unused-mut` implied by `-D warnings`
+       >   = help: to override `-D warnings` add `#[allow(unused_mut)]`
+       >
+       > error: could not compile `srug-nix` (bin "srug-nix" test) due to 2 previous errors
+       > warning: build failed, waiting for other jobs to finish...
+       > error: could not compile `srug-nix` (bin "srug-nix") due to 2 previous errors
+       For full logs, run:
+         nix log /nix/store/y7rxcz3f5f355d57rd9l99z7a1ryr8nm-srug-nix-clippy-0.1.0.drv
+```
+
+Running a single check directly is often better developer experience. But I've
+found that adding the checks to your flake is super convenient to run all of
+them at once, especially if you're using nix to build or distribute the final
+artifact.
+
+---
+
+# Questions 
+
+---
+
+# Lets Talk `system`
+
+So far, we've been hardcoding `system` to `x86-64-linux`, but Nix works on more
+than just run of the mill Linux.
+
+However, because nix is pure, **the current system cannot affect the output of a
+flake.** To demonstrate this, let's build our flake for additional systems:
+
+---
+
+```nix
+{
+  description = "A super basic Flake";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    crane.url = "github:ipetkov/crane";
   };
 
   outputs = {
     self,
     nixpkgs,
-    flake-utils,
     ...
-  }:
-    flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
+  } @ inputs: let
+    forAllSystems = func:
+      nixpkgs.lib.genAttrs
+      ["x86_64-linux" "aarch64-darwin"] (
+        system:
+          func (import nixpkgs {inherit system;})
+      );
+  in {
+    packages = forAllSystems (pkgs: let
+      crane = inputs.crane.mkLib pkgs;
 
-        myCrate = pkgs.rustPlatform.buildRustPackage {
-          # This needs to match the package.name entry in cargo.toml
-          pname = "srug-nix";
-          version = "v0.1.0";
+      src = crane.cleanCargoSource ./.;
 
-          src = pkgs.lib.cleanSource ./.;
-          cargoLock.lockFile = ./Cargo.lock;
-        };
-      in {
-        packages.default = myCrate;
-      }
-    );
+      commonArgs = {
+        inherit src;
+      };
+
+      cargoArtifacts = crane.buildDepsOnly commonArgs;
+
+      srugNix = crane.buildPackage (
+        commonArgs // {inherit cargoArtifacts;}
+      );
+    in {
+      default = srugNix;
+    });
+
+    devShells = forAllSystems (pkgs: {
+      default = pkgs.mkShell {
+        packages = with pkgs; [cargo llvm];
+      };
+    });
+  };
 }
 ```
 
 ---
 
-They also have supercharged third party wrappers that make it a breeze to package and test your code.
+The key here is the `forAllSystems` function.
 
-My preference is [ipelkov/crane](https://github.com/ipetkov/crane).
-
-The package is defined in a let-in block so that they are in scope for the
-outputs section of the flake.
 ```nix
-let
-  pkgs = nixpkgs.legacyPackages.${system};
-
-  # Initalize Crane funcitons for this system/nixpkgs
-  craneLib = crane.mkLib pkgs;
-
-  commonArgs = {
-    # Crane has a specallised clean source funciton
-    src = craneLib.cleanCargoSource ./.;
-    strictDeps = true;
-
-    # On nix, most packages need `pkg-config` for linkning, and `openssl` if its
-    # a webserver. Our hello world is too simple to need them.
-    buildInputs = [
-            pkgs.pkg-config pkgs.openssl
-        ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [pkgs.libiconv];
-    # the `++` syntax appends arrays
-  };
-
-  # Here, our package is build by passing an attibute set to crane's
-  # build package funciton. `//` merges attr sets.
-  srug-nix = craneLib.buildPackage (
-    commonArgs
-    // {
-      # Why might we have this line?
-      cargoArtifacts = craneLib.buildDepsOnly commonArgs;
-    }
+forAllSystems = func:
+  nixpkgs.lib.genAttrs
+  ["x86_64-linux" "aarch64-darwin"] (
+    system:
+      func (import nixpkgs {inherit system;})
   );
-in
 ```
+
+Its argument is another function `func`, which it uses to populate the
+sub-attributes created by `nixpkgs.lib.genAttrs`.
+
+If we manually expand the call to `genAttrs`, the function would look as follows:
+
+```nix
+forAllSystems = func: {
+    "x86_64-linux" = func (import nixpgks { inherit "x86_64-linux"; });
+    "aarch64-darwin" = func (import nixpgks { inherit "aarch64-darwin"; });
+}
+```
+
+--- 
+
+Now, if we show all the flake output, we can see the Darwin system.
+
+```
+❯ nix flake show --all-systems
+git+file:///home/kgb33/Code/SpokaneTechUserGroups/rust/nix-talk
+├───devShells
+│   ├───aarch64-darwin
+│   │   └───default: development environment 'nix-shell'
+│   └───x86_64-linux
+│       └───default: development environment 'nix-shell'
+└───packages
+    ├───aarch64-darwin
+    │   └───default: package 'srug-nix-0.1.0'
+    └───x86_64-linux
+        └───default: package 'srug-nix-0.1.0'
+```
+
+Every defined system is part of the output, the `nix` command just chooses the
+right one. You can ever force it to use the wrong system:
+
+```
+❯ nix run .#packages.x86_64-linux.default
+Hello, world!
+❯ nix run .#packages.aarch64-darwin.default
+error: a 'aarch64-darwin' with features {} is required to build '/nix/store/vlvsdb6l9zw6hrmpv384w1mzimbvb3fv-dummy.rs.drv', but I am a 'x86_64-linux' with features {benchmark, big-parallel, kvm, nixos-test}
+```
+
 
 ---
 
-Within the output section of the flake, we use the `srug-nix` package:
+Great, now we can use our flake on any supported system. However, this has a
+downside, if we want to reuse our package definition, we'd have to wrap it in
+another function. 
 
-In addition to the `packages` section that we had in the previous examples, we
-also define two more sections, `checks` and `devShells`.
+Luckily, we can pull in another input to clean this up a bit: [hercules-ci/flake-parts](https://github.com/hercules-ci/flake-parts).
 
-```nix
-{
-  checks = {
-    inherit srug-nix;
-  };
-
-  packages.default = srug-nix;
-
-  devShells.default = craneLib.devShell {
-    checks = self.checks.${system};
-
-    packages = [
-      rust-analyser
-    ];
-  };
-}
-```
-
-The flake's `checks` output inherits the checks that crane created for our
-package, and the checks are run via `nix flake check`. In this case, the checks
-are fairly simple, think `cargo test` and clippy.
-
-`devShells` is one of my favorite features of nix, it lets you defined an
-environment and package set to have available for a project. This program is
-pretty simple, so we don't need much.
-
-`devShells` are great when working on a team or project that requires multiple
-command line tools or a specific version of a language. For example, my
-homelab's IaC repo has a flake with just a `devShell` output that contains all
-the various CLIs I need for the project. Likewise, at work, our mono-repo
-contains all the various tooling that we need, and a customized build of PHP,
+----
 
 ```nix
 {
-  devshells.default = pkgs.mkShell {
-    packages = [
-      (php84.buildEnv {
-        extraConfig = ''
-          memory_limit = 2G
-        '';
-        extensions = {
-          enabled,
-          all,
-        }:
-          enabled
-          ++ (with all; [
-            # xdebug
-          ]);
-      })
-      _1password-cli
-      colima
-    ];
-  };
-}
-```
+  description = "A super basic Flake";
 
-To use these `devShells`, you can run `nix develop`, which will always drop you
-into a bash shell. Then, if you want to use non-bash shells, you can use
-`direnv` to keep your shell and all the associated customization.
-
-# Using your packaged code
-
-To use an application packaged with nix, you just include it as an input in
-your flake, then you can use it like you would any package from `nixpkgs`.
-
-```nix
-{
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    hmm = {
-      url = "github:KGB33/hmm";
-      imports.nixpkgs.follows = "nixpkgs";
-    };
+    crane.url = "github:ipetkov/crane";
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
-  ouputs = {
-    nixpkgs,
-    hmm,
-  }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      hmm' = hmm.packages.${system}.hmm;
-    in {
-      devShells.default = pkgs.mkShell {packages = [hmm'];};
-    });
+
+  outputs = {
+    self,
+    flake-parts,
+    ...
+  } @ inputs:
+    flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux" "aarch64-darwin"];
+      perSystem = {
+        self',
+        inputs',
+        pkgs,
+        ...
+      }: let
+        crane = inputs.crane.mkLib pkgs;
+        src = crane.cleanCargoSource ./.;
+
+        commonArgs = {
+          inherit src;
+        };
+
+        cargoArtifacts = crane.buildDepsOnly commonArgs;
+
+        srugNix = crane.buildPackage (
+          commonArgs // {inherit cargoArtifacts;}
+        );
+      in {
+        packages.default = srugNix;
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [cargo llvm];
+        };
+        checks = {
+          inherit srugNix;
+
+          clippy = crane.cargoClippy (
+            commonArgs
+            // {
+              inherit cargoArtifacts;
+              cargoClippyExtraArgs = "--all-targets -- --deny warnings";
+            }
+          );
+
+          fmt = crane.cargoFmt {
+            inherit src;
+          };
+        };
+      };
+    };
 }
 ```
+
+If you squint a little, you can see our old flake (`perSystem`) wrapped with
+logic that generates it for each system (`flake-parts.lib.mkFlake`).
+
