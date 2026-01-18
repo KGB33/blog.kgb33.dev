@@ -1,6 +1,6 @@
 ---
 title: "Playing in Traefik"
-pubDate: "2023-04-13"
+date: "2023-04-13"
 tags: ["traefik", "k8s"]
 
 draft: false

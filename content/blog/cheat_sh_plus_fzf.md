@@ -1,6 +1,6 @@
 ---
 title: "Cheat.sh + fzf"
-pubDate: "2022-12-10"
+date: "2022-12-10"
 tags: ["fzf", "cheat.sh", "zsh", "tmux"]
 
 draft: false

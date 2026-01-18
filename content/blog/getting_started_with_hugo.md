@@ -1,7 +1,7 @@
 ---
 title: "Deploying `blog.kgb33.dev`"
 description: "Hugo quick-start"
-pubDate: "2021-12-17"
+date: "2021-12-17"
 tags: ["hugo", "nginx", "letsEncrypt", "CI/CD", "githubActions", "npm"]
 ---
 

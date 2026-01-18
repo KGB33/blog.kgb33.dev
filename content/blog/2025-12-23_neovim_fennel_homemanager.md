@@ -1,6 +1,6 @@
 ---
 title: "Configuring Neovim with fennel and home-manager"
-pubDate: "2025-12-23"
+date: "2025-12-23"
 tags: ["nix", "home-manager", "neovim", "fennel"]
 
 draft: false

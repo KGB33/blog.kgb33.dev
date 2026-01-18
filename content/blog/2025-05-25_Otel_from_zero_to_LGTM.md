@@ -1,6 +1,6 @@
 ---
 title: "OTel stuff"
-pubDate: "2025-06-13"
+date: "2025-06-13"
 tags: ["nix", "homelab"]
 
 draft: true

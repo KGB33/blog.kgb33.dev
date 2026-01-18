@@ -1,6 +1,6 @@
 ---
 title: "Nix Tricks"
-pubDate: "2025-02-05"
+date: "2025-02-05"
 tags: ["nixos", "nix", "homelab", "proxmox"]
 
 draft: false

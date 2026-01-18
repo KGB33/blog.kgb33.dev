@@ -1,6 +1,6 @@
 ---
 title: "Daggerify the Blog - Part 1: Build"
-pubDate: "2022-03-30"
+date: "2022-03-30"
 tags: ["dagger", "docker"]
 
 draft: false

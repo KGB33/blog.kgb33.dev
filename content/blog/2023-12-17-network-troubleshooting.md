@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting Failing Commands"
-pubDate: "2023-12-17"
+date: "2023-12-17"
 tags: [k8s, network, roboshpee]
 
 draft: false

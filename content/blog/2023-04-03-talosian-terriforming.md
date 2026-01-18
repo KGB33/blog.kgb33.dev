@@ -1,6 +1,6 @@
 ---
 title: "Talosian Terraforming"
-pubDate: "2023-04-03"
+date: "2023-04-03"
 tags: ["terraform", "proxmox", "talos", "k8s", "cilium"]
 
 draft: false

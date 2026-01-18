@@ -1,6 +1,6 @@
 ---
 title: "Gleam + `perf`"
-pubDate: "2025-12-06"
+date: "2025-12-06"
 tags: ["TiL", "gleam", "perf", "preformance", "erlang", "beam"]
 
 draft: false

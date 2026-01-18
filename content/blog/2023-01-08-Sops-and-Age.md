@@ -1,6 +1,6 @@
 ---
 title: "Sops and Age"
-pubDate: "2023-01-08"
+date: "2023-01-08"
 tags: ["TiL", "sops", "age"]
 
 draft: false

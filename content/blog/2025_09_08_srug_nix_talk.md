@@ -1,6 +1,6 @@
 ---
 title: "Packaging Rust programs with Nix"
-pubDate: "2025-06-28"
+date: "2025-06-28"
 tags: ["nix", "rust"]
 
 draft: false

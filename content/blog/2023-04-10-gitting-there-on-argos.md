@@ -1,6 +1,6 @@
 ---
 title: "Gitting There on Argos"
-pubDate: "2023-04-10"
+date: "2023-04-10"
 tags: ["ArgoCD", "k8s", "GitOps"]
 
 draft: false

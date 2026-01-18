@@ -1,6 +1,6 @@
 ---
 title: "Ansible for Localhost"
-pubDate: "2022-02-03"
+date: "2022-02-03"
 tags: ["ansible", "arch-linux"]
 
 draft: false

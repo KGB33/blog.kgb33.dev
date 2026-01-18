@@ -1,6 +1,6 @@
 ---
 title: "GPG Keys"
-pubDate: "2022-10-28"
+date: "2022-10-28"
 tags: ['git', 'gpg']
 
 draft: false

@@ -1,6 +1,6 @@
 ---
 title: "Manage custom packages using Nix and Home-Manager"
-pubDate: "2024-06-04"
+date: "2024-06-04"
 tags: ["nix", "home-manager"]
 
 draft: false

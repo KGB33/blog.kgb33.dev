@@ -1,6 +1,6 @@
 ---
 title: "Regex Capture Groups: Restructure text using NeoVim"
-pubDate: "2024-07-25"
+date: "2024-07-25"
 tags: ["neovim", "regex"]
 
 draft: false

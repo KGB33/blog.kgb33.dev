@@ -1,6 +1,6 @@
 ---
 title: "TiL..About `git` remotes"
-pubDate: "2023-07-15"
+date: "2023-07-15"
 tags: ["TiL", "nixos"]
 
 draft: false

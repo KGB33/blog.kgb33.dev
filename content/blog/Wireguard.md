@@ -1,6 +1,6 @@
 ---
 title: "Point-to-Site Wireguard Configuration"
-pubDate: "2022-03-08"
+date: "2022-03-08"
 tags: ["Wireguard", "opnsense", "networkd"]
 
 draft: false

@@ -1,6 +1,6 @@
 ---
 title: "Getting Going with Gitea"
-pubDate: "2022-01-23"
+date: "2022-01-23"
 tags: ["gitea","git","nginx","ssh"]
 
 draft: false

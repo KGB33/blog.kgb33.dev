@@ -1,6 +1,6 @@
 ---
 title: "Terraforming Proxmox"
-pubDate: "2023-01-12"
+date: "2023-01-12"
 tags: ["terraform", "proxmox", "ansible"]
 
 draft: false

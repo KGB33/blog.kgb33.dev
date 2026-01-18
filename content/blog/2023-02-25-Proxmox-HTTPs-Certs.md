@@ -1,6 +1,6 @@
 ---
 title: "Proxmox HTTPs Certificates"
-pubDate: "2023-01-25"
+date: "2023-01-25"
 tags: ["TiL", "Proxmox", "LetsEncrypt", "ACME", "DNS"]
 
 draft: false

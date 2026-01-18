@@ -1,6 +1,6 @@
 ---
 title: "`Maybe` I Like Haskell"
-pubDate: "2024-04-18"
+date: "2024-04-18"
 tags: ["TiL", "haskell", "rust"]
 
 draft: false
