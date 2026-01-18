@@ -10,15 +10,11 @@ I recently experimented automating VM creation across my
 Proxmox cluster. I tested out several tools before finally
 settling on Terraform and cloning from a Proxmox "template".
 
-<!--more-->
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 - [Goals](#goals)
 - [Other Tools Considered](#other-tools-considered)
   - [Ansible](#ansible)
   - [Cloud-init](#cloud-init)
-  - [iPXE (and netboot.xyz)](#ipxe-and-netbootxyz)
+  - [iPXE (and netboot.xyz)](#ipxe-and-netboot-xyz)
   - [HashiCorp Packer](#hashicorp-packer)
 - [Pre-Terraforming Work](#pre-terraforming-work)
   - [Setting Up Storage](#setting-up-storage)
@@ -35,8 +31,6 @@ settling on Terraform and cloning from a Proxmox "template".
     - [Ansible](#ansible-1)
     - [Final Scripts](#final-scripts)
 - [Conclusion](#conclusion)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Goals
 

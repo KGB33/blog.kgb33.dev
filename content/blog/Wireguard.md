@@ -16,8 +16,8 @@ using OPNsense and systemd-networkd.
 - [Generating Point Peer Keys](#generating-point-peer-keys)
 - [Configuring the Site Peer](#configuring-the-site-peer)
 - [Configuring the Point Peer(s)](#configuring-the-point-peers)
-  - [99-wg0.netdev](#99-wg0netdev)
-  - [99-wg0.network](#99-wg0network)
+  - [99-wg0.netdev](#99-wg0-netdev)
+  - [99-wg0.network](#99-wg0-network)
 - [Toggling the VPN](#toggling-the-vpn)
 - [Additional Resources](#additional-resources)
 
@@ -51,7 +51,7 @@ Make sure to note the "Tunnel Address" (`10.10.10.1/24`),
 the client peer "Allowed IPs" (`10.10.10.2/32`), and the
 port chosen (`51820`). These will be used later.
 
-# Configuring the Point Peer(s)
+# Configuring the Point Peers
 
 To configure a point using `systemd-networkd` four files need to be created
 in the `/etc/systemd/network/` directory.

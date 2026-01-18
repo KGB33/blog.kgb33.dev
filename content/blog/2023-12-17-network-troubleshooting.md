@@ -17,11 +17,11 @@ I took to solve the issue.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Problem Overview](#problem-overview)
-  - [Network/Host Background](#networkhost-background)
+  - [Network/Host Background](#network-host-background)
 - [Data](#data)
   - [Roboshpee Logs](#roboshpee-logs)
   - [Hubble logs](#hubble-logs)
-  - [`minecraft.kgb33.dev` TCP Dump](#minecraftkgb33dev-tcp-dump)
+  - [`minecraft.kgb33.dev` TCP Dump](#minecraft-kgb33-dev-tcp-dump)
   - [`ping`-pong](#ping-pong)
   - [Routes out of `minecraft`](#routes-out-of-minecraft)
 - [Fix](#fix)

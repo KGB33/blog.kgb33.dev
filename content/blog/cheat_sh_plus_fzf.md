@@ -21,17 +21,12 @@ This walks through my development process of creating a shell script that:
   - Create a key bind to call the script.
 
 
-<!--more-->
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 - [Inspiration](#inspiration)
 - [Alternatives](#alternatives)
   - [`tldr`](#tldr)
-  - [`cht.sh`](#chtsh)
+  - [`cht.sh`](#cht-sh)
 - [Development](#development)
   - [Url Format](#url-format)
-    - [`cheat.sh/:list`](#cheatshlist)
   - [Stringing it all together.](#stringing-it-all-together)
     - [Selecting the topic](#selecting-the-topic)
     - [Paging the Cheat Sheet](#paging-the-cheat-sheet)
@@ -44,7 +39,6 @@ This walks through my development process of creating a shell script that:
 - [Summary](#summary)
 - [Gallery](#gallery)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Inspiration
 

@@ -10,24 +10,6 @@ the theme and customization will be more specific, and will include the steps to
 Hugo into an production environment, including CI/CD and Let's Encrypt certificates.
 
 <!--more-->
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Step 0 - Installing Hugo](#step-0---installing-hugo)
-- [Step 1 - Setting Up the Theme](#step-1---setting-up-the-theme)
-    - [Theme Installation](#theme-installation)
-    - [Json Resume](#json-resume)
-- [CI/CD](#cicd)
-  - [Pre-commit](#pre-commit)
-  - [Github Actions](#github-actions)
-    - [Check Dead Links](#check-dead-links)
-- [Production](#production)
-  - [Production Environment](#production-environment)
-  - [Systemd Service](#systemd-service)
-  - [Nginx Reverse Proxy](#nginx-reverse-proxy)
-    - [Lets Encrypt Auto-certs via Cloudflare DNS](#lets-encrypt-auto-certs-via-cloudflare-dns)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # Step 0 - Installing Hugo
 

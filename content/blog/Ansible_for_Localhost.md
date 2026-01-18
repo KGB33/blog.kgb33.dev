@@ -14,15 +14,13 @@ the title it can also be used to configure a local deployment.
 > `vars/pacman_packages.yaml` was missing some packages that later steps needed.
 > It still saved me hours of work though.
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [End Goal](#end-goal)
 - [Basics](#basics)
     - [Project Structure](#project-structure)
 - [Installing Packages](#installing-packages)
     - [Variable Files](#variable-files)
-    - [Updating `pacman.conf` to Enable Parallel Downloads](#updating-pacmanconf-to-enable-parallel-downloads)
+    - [Updating `pacman.conf` to Enable Parallel Downloads](#updating-pacman-conf-to-enable-parallel-downloads)
 - [Specialized package managers](#specialized-package-managers)
   - [Install `paru`](#install-paru)
   - [Use `paru` to install packages.](#use-paru-to-install-packages)

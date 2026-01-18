@@ -18,7 +18,7 @@ Part 1 covers building the docker image and pushing it to the Github container r
 
 - [Building](#building)
   - [Hugo Extended](#hugo-extended)
-    - [Base Go 1.18 image](#base-go-118-image)
+    - [Base Go 1.18 image](#base-go-1-18-image)
     - [Pull Hugo Source code](#pull-hugo-source-code)
     - [Build Hugo](#build-hugo)
   - [Base dependencies](#base-dependencies)

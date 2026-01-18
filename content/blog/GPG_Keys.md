@@ -19,7 +19,7 @@ They have either created & committed from the Github web editor or signed their 
 - [PKI Overview](#pki-overview)
 - [Steps to Sign](#steps-to-sign)
   - [Generating a Key](#generating-a-key)
-  - [Configure GPG & Git](#configure-gpg--git)
+  - [Configure GPG & Git](#configure-gpg-git)
   - [Commit!](#commit)
   - [Unverified?](#unverified)
   - [Uploading to a Key Server](#uploading-to-a-key-server)

@@ -24,13 +24,13 @@ I did & learned.
   - [Dagger-ified this blog.](#dagger-ified-this-blog)
   - [Breaking Dagger](#breaking-dagger)
   - [WireGuard Setup](#wireguard-setup)
-- [April & May](#april--may)
+- [April & May](#april-may)
   - [Java Design Patterns](#java-design-patterns)
-- [June, July, & August](#june-july--august)
+- [June, July, & August](#june-july-august)
   - [FlightAware](#flightaware)
 - [September](#september)
 - [October](#october)
-  - [Hyperland, Eww & Nasty Notifications](#hyperland-eww--nasty-notifications)
+  - [Hyperland, Eww & Nasty Notifications](#hyperland-eww-nasty-notifications)
   - [Ansible (For the Homelab)](#ansible-for-the-homelab)
   - [Blog Posts](#blog-posts)
     - [GPG Keys](#gpg-keys)
@@ -41,8 +41,8 @@ I did & learned.
 - [December](#december)
   - [Raincloud](#raincloud)
   - [Rattlesume](#rattlesume)
-  - [Cheat.sh](#cheatsh)
-- [2023 & Beyond](#2023--beyond)
+  - [Cheat.sh](#cheat-sh)
+- [2023 & Beyond](#2023-beyond)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
