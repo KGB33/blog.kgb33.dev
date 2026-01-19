@@ -7,23 +7,15 @@ import (
 
 type Blog struct {
 	Src  *dagger.Directory
-	Pkg  *dagger.File
-	Lock *dagger.File
 }
 
 func New(
 	// +defaultPath="."
-	// +ignore=["*", "!src/", "!public/", "!astro.config.mjs", "!tsconfig.json"]
+	// +ignore=["*", "!content/", "!static/", "!templates/", "!sass/", "!config.toml"]
 	src *dagger.Directory,
-	// +defaultPath="package.json"
-	pkg *dagger.File,
-	// +defaultPath="bun.lock"
-	lock *dagger.File,
 ) *Blog {
 	return &Blog{
 		Src:  src,
-		Pkg:  pkg,
-		Lock: lock,
 	}
 }
 
@@ -32,19 +24,14 @@ func (m *Blog) Build(
 ) *dagger.Container {
 	return m.BuildEnv(ctx).
 		WithDirectory(".", m.Src).
-		WithExec([]string{"bun", "run", "build"})
+		WithExec([]string{"zola", "build"})
 }
 
 func (m *Blog) BuildEnv(
 	ctx context.Context,
 ) *dagger.Container {
-	bunCache := dag.CacheVolume("bun")
 	return dag.Container().
-		From("oven/bun:1").
-		WithFile("bun.lock", m.Lock).
-		WithFile("package.json", m.Pkg).
-		WithMountedCache("/root/.bun", bunCache).
-		WithExec([]string{"bun", "install", "--frozen-lockfile", "--production"})
+		From("ghcr.io/getzola/zola:v0.22.0")
 }
 
 func (m *Blog) Prod(
@@ -56,7 +43,7 @@ func (m *Blog) Prod(
 		From("caddy").
 		WithExposedPort(1313).
 		WithFile("/etc/caddy/Caddyfile", caddy).
-		WithDirectory("/var/www/html", m.Build(ctx).Directory("dist"))
+		WithDirectory("/var/www/html", m.Build(ctx).Directory("public"))
 }
 
 func (m *Blog) Publish(
