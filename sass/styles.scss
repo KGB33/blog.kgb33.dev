@@ -1,0 +1,19 @@
+@import url("giallo-light.css") (prefers-color-scheme: light);
+@import url("giallo-dark.css") (prefers-color-scheme: dark);
+@import './catppuccin.scss';
+
+body {
+  background: var(--base);
+  color: var(--text);
+  max-widith: 70%;
+  margin: auto;
+}
+
+a {
+  color: var(--teal);
+}
+
+.section-header {
+  background: var(--surface1);
+  text-align: center;
+}
