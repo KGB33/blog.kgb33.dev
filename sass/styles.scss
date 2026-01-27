@@ -1,19 +1,272 @@
 @import url("giallo-light.css") (prefers-color-scheme: light);
 @import url("giallo-dark.css") (prefers-color-scheme: dark);
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
 @import './catppuccin.scss';
 
-body {
-  background: var(--base);
-  color: var(--text);
-  max-widith: 70%;
-  margin: auto;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-a {
-  color: var(--teal);
+body {
+  font-family: 'Courier New', 'Courier', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--base);
+  max-width: 105ch;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.global-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--overlay0);
+  padding-bottom: 0.5rem;
+  margin-bottom: 2rem;
+  
+  a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  .title {
+    flex: 1;
+    text-align: center;
+    
+    h1 {
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
 }
 
 .section-header {
-  background: var(--surface1);
-  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+
+  a {
+    color: var(--lavender);
+    
+    &:visited {
+      color: var(--lavender);
+    }
+  
+    &:hover {
+      color: var(--lavender);
+    }
+  }
+}
+
+h1.section-header {
+  margin-top: 0;
+}
+
+h2.section-header {
+  font-size: 13px;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.container {
+  section {
+    margin-bottom: 2rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+a {
+  color: var(--blue);
+
+  &:visited {
+    color: var(--mauve);
+  }
+  
+  &:hover {
+    color: var(--sky);
+  }
+}
+
+ul {
+  list-style-type: none;
+  margin-left: 2rem;
+  
+  li {
+    margin-bottom: 0.25rem;
+    position: relative;
+    
+    &::before {
+      content: '•';
+      position: absolute;
+      left: -1.5rem;
+      color: var(--overlay1);
+    }
+  }
+}
+
+p {
+  margin-bottom: 1rem;
+  text-align: justify;
+}
+
+code, pre {
+  font-family: 'Fira Code', 'Courier New', 'Courier', monospace;
+  font-variant-ligatures: normal;
+  font-feature-settings: 'calt' 1, 'liga' 1;
+}
+
+code {
+  padding: 0.125rem 0.25rem;
+  border-radius: 2px;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border-left: 3px solid var(--overlay0);
+}
+
+body::after {
+  content: '';
+  display: block;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--overlay0);
+}
+
+// Blog post cards - styled like man page OPTIONS section
+.post-card {
+  margin-bottom: 1.5rem;
+  padding-left: 0;
+  padding-left: 1rem;
+  
+  .post-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    
+    a {
+      color: var(--mauve);
+      text-decoration: none;
+      
+      &:hover {
+        color: var(--blue);
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .post-meta {
+    font-size: 12px;
+    color: var(--subtext0);
+    margin-bottom: 0.5rem;
+    
+    .post-date {
+      margin-right: 1rem;
+    }
+    
+    .post-reading-time::before {
+      content: '• ';
+      margin-right: 0.25rem;
+    }
+  }
+  
+  .post-summary {
+    margin-left: 2rem;
+    color: var(--subtext1);
+    text-align: justify;
+    line-height: 1.5;
+  }
+  
+  .post-tags {
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+    font-size: 12px;
+    
+    .tag {
+      display: inline-block;
+      margin-right: 0.5rem;
+      color: var(--overlay1);
+      
+      &::before {
+        content: '[';
+      }
+      
+      &::after {
+        content: ']';
+      }
+      
+      a {
+        color: var(--overlay1);
+        text-decoration: none;
+        
+        &:hover {
+          color: var(--blue);
+        }
+      }
+    }
+  }
+}
+
+// GitHub link styling
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--overlay0);
+  background-color: var(--mantle);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: var(--surface0);
+    border-color: var(--overlay1);
+    color: var(--blue);
+    text-decoration: none;
+    
+    .github-icon {
+      fill: var(--blue);
+    }
+  }
+  
+  &:visited {
+    color: var(--text);
+  }
+  
+  .github-icon {
+    width: 16px;
+    height: 16px;
+    fill: var(--text);
+    transition: fill 0.2s ease;
+  }
+  
+  .github-text {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 }

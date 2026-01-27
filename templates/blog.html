@@ -1,3 +1,4 @@
+{% import "macros/post_card.html" as post_macros %}
 {% extends "base.html" %}
 
 {% block content %}
@@ -6,7 +7,7 @@
 </h1>
 <ul>
   {% for page in section.pages %}
-  <li><a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+    {{ post_macros::post_card(page=page) }}
   {% endfor %}
 </ul>
 {% endblock content %}
