@@ -21,7 +21,7 @@
       devShells.default = pkgs.mkShell {
         buildInputs = with pkgs; [
           dagger.packages.${system}.dagger
-          bun
+          zola
           caddy
           git
           go

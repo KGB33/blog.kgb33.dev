@@ -1,0 +1,26 @@
+{% macro post_card(page) %}
+<link id="styles" rel="stylesheet" type="text/css" href="/post_card.css"/>
+<article class="post-card">
+  <div class="post-title">
+    <a href="{{ page.permalink }}">-- {{ page.title }}</a>
+  </div>
+  
+  <div class="post-meta">
+    <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
+  </div>
+  
+  {% if page.summary %}
+  <div class="post-summary">
+    {{ page.summary | safe }}
+  </div>
+  {% endif %}
+  
+  {% if page.taxonomies.tags %}
+  <div class="post-tags">
+    {% for tag in page.taxonomies.tags %}
+    <span class="tag"><a href="{{ get_taxonomy_url(kind='tags', name=tag) }}">{{ tag }}</a></span>
+    {% endfor %}
+  </div>
+  {% endif %}
+</article>
+{% endmacro post_card %}
