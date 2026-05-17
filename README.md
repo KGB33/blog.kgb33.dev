@@ -4,7 +4,8 @@ The source for my blog.
 
 ## Run Locally
 
-`dagger call prod up`
+Use the flake, then 
+`dagger call prod up` or `zola serve`
 
 ## Run In Production
 

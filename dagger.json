@@ -1,6 +1,6 @@
 {
   "name": "blog",
-  "engineVersion": "v0.18.10",
+  "engineVersion": "v0.20.8",
   "sdk": {
     "source": "go"
   },
