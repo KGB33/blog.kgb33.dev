@@ -1,8 +1,8 @@
 ---
 title: "TiL... `hugo server` ignores variables set in `config.toml`"
 date: "2024-01-24"
-tags: ["TiL", "Hugo"]
-
+taxonomies:
+  tags: ["TiL", "Hugo"]
 draft: false
 ---
 

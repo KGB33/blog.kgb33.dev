@@ -1,0 +1,105 @@
+@import "spacing";
+
+@mixin command($responsive: true) {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  @if $responsive {
+    @media screen and (max-width: $compact-width) {
+      flex-direction: column;
+    }
+  }
+
+  *:first-child {
+    padding-left: 0;
+  }
+
+  *:last-child {
+    padding-right: 0;
+  }
+
+  * {
+    white-space: nowrap;
+    display: flex;
+
+    padding: 0 0.4em;
+    margin: 0;
+  }
+
+  .prog {
+    font-weight: bold;
+
+    &.id {
+      color: var(--gray);
+      padding-left: 0;
+
+      &::before {
+        content: "(";
+      }
+      &::after {
+        content: ")";
+      }
+
+      @extend %link-bare;
+    }
+
+    @extend %link-bare;
+    @include link-colors(var(--title-color));
+  }
+
+  .opt {
+    color: var(--fg3);
+
+    &::before, &::after {
+      color: var(--gray);
+    }
+
+  }
+
+  .label {
+    color: var(--gray);
+    padding-right: 0;
+
+    &::before {
+      content: "--";
+    }
+  }
+
+  .tag-op {
+    color: var(--gray);
+  }
+
+  ul.opt, ol.opt {
+    &::before {
+      content: "[ ";
+    }
+
+    &::after {
+      content: " ]";
+    }
+
+    @extend %flex-bar;
+  }
+
+  time.opt {
+    &::before {
+      content: "--date";
+      color: var(--gray);
+      padding-right: 0.5em;
+    }
+  }
+
+  a.opt {
+    @extend %link-secondary-colors;
+    @extend %link-bare;
+  }
+}
+
+%command {
+  @include command;
+}
+
+.command {
+  @extend %command;
+}

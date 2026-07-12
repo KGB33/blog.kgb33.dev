@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ taxonomy.name }} ~ {{ config.title }}{% endblock title %}
+
+{% block titlebar %}
+{{ page_macros::titlebar(title=config.title, subtitle=taxonomy.name, section="7") }}
+{% endblock titlebar %}
+
+{% block body %}
+<section>
+  <h2 class="section-title">{{ taxonomy.name }}</h2>
+  <div class="section-body">
+    <dl class="hl">
+    {%- for term in terms %}
+      <dt class="command hl-header">
+        <a class="prog" href="{{ term.permalink | safe }}">{{ term.name }}</a>
+        <span class="opt">{{ term.pages | length }} post{{ term.pages | length | pluralize }}</span>
+      </dt>
+    {% endfor -%}
+    </dl>
+  </div>
+</section>
+{% endblock body %}

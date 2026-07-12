@@ -1,8 +1,8 @@
 ---
 title: "Playing in Traefik"
 date: "2023-04-13"
-tags: ["traefik", "k8s"]
-
+taxonomies:
+  tags: ["traefik", "k8s"]
 draft: false
 ---
 

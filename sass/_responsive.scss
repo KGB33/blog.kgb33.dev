@@ -1,0 +1,24 @@
+$max-width: 847px;
+$phone-width: 600px;
+$compact-width: 725px;
+
+body {
+  --indent: 2rem;
+  --block-indent: #{var(--indent)};
+
+  @media screen and (max-width: $phone-width) {
+    --indent: 1rem;
+    // Possible fix for odd font-sizing on iOS on some elements
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media screen and (min-width: $max-width) {
+    & {
+      max-width: $max-width;
+      min-height: 100vh;
+      border: 1px solid var(--gray);
+      border-top: none;
+      border-bottom: none;
+    }
+  }
+}

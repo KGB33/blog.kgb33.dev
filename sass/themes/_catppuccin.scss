@@ -1,0 +1,75 @@
+/// Catppuccin palette — Latte (light) / Mocha (dark).
+/// https://catppuccin.com/palette
+///
+/// This is the ONLY file in the project allowed to contain color literals.
+/// To swap color schemes: add themes/_yourtheme.scss exposing the same two
+/// mixins (light-palette / dark-palette) setting the same custom properties,
+/// then change the theme import at the top of sass/_colors.scss.
+
+@mixin dark-palette {
+  // Catppuccin Mocha
+  --bg: #1e1e2e;       // base
+  --bg0: #1e1e2e;      // base
+  --bg0-h: #11111b;    // crust  (hard contrast)
+  --bg0-s: #181825;    // mantle (soft contrast)
+  --bg1: #313244;      // surface0
+  --bg2: #45475a;      // surface1
+  --bg3: #585b70;      // surface2
+  --bg4: #6c7086;      // overlay0
+  --fg: #cdd6f4;       // text
+  --fg0: #cdd6f4;      // text
+  --fg1: #cdd6f4;      // text
+  --fg2: #bac2de;      // subtext1
+  --fg3: #a6adc8;      // subtext0
+  --fg4: #9399b2;      // overlay2
+  --red: #f38ba8;
+  --green: #a6e3a1;
+  --yellow: #f9e2af;
+  --blue: #89b4fa;
+  --purple: #cba6f7;   // mauve
+  --aqua: #94e2d5;     // teal
+  --orange: #fab387;   // peach
+  --gray: #7f849c;     // overlay1
+  --bright-red: #eba0ac;    // maroon
+  --bright-green: #a6e3a1;  // green
+  --bright-yellow: #f9e2af; // yellow
+  --bright-blue: #74c7ec;   // sapphire
+  --bright-purple: #b4befe; // lavender
+  --bright-aqua: #89dceb;   // sky
+  --bright-orange: #fab387; // peach
+  --bright-gray: #9399b2;   // overlay2
+}
+
+@mixin light-palette {
+  // Catppuccin Latte
+  --bg: #eff1f5;       // base
+  --bg0: #eff1f5;      // base
+  --bg0-h: #dce0e8;    // crust
+  --bg0-s: #e6e9ef;    // mantle
+  --bg1: #ccd0da;      // surface0
+  --bg2: #bcc0cc;      // surface1
+  --bg3: #acb0be;      // surface2
+  --bg4: #9ca0b0;      // overlay0
+  --fg: #4c4f69;       // text
+  --fg0: #4c4f69;      // text
+  --fg1: #4c4f69;      // text
+  --fg2: #5c5f77;      // subtext1
+  --fg3: #6c6f85;      // subtext0
+  --fg4: #7c7f93;      // overlay2
+  --red: #d20f39;
+  --green: #40a02b;
+  --yellow: #df8e1d;
+  --blue: #1e66f5;
+  --purple: #8839ef;   // mauve
+  --aqua: #179299;     // teal
+  --orange: #fe640b;   // peach
+  --gray: #8c8fa1;     // overlay1
+  --bright-red: #e64553;    // maroon
+  --bright-green: #40a02b;  // green
+  --bright-yellow: #df8e1d; // yellow
+  --bright-blue: #209fb5;   // sapphire
+  --bright-purple: #7287fd; // lavender
+  --bright-aqua: #04a5e5;   // sky
+  --bright-orange: #fe640b; // peach
+  --bright-gray: #7c7f93;   // overlay2
+}

@@ -1,0 +1,65 @@
+/// Semantic color mapping. Palette-agnostic: only var(--*) references here.
+/// Swap palettes by changing the theme import below — see themes/_catppuccin.scss.
+
+@import "themes/catppuccin";
+@import "link";
+
+@mixin dark-colors {
+  @include dark-palette;
+
+  --section: var(--bg0);
+  --section-bg: var(--fg3);
+
+  @include link-colors($color: var(--bright-aqua), $visited: var(--green));
+  --title-color: var(--bright-aqua);
+
+  --h3: var(--green);
+  --h4: var(--blue);
+  --h5: var(--purple);
+  --h6: var(--fg2);
+
+  --code: var(--bright-blue);
+  --bg-code: var(--bg0-s);
+  --bg-code-mark: var(--bg0);
+
+  --alert-note: var(--blue);
+  --alert-tip: var(--green);
+  --alert-important: var(--purple);
+  --alert-warning: var(--yellow);
+  --alert-caution: var(--red);
+}
+
+@mixin light-colors {
+  @include light-palette;
+
+  --section: var(--fg2);
+  --section-bg: var(--bg3);
+
+  @include link-colors($color: var(--blue), $visited: var(--purple));
+  --title-color: var(--blue);
+
+  --h3: var(--aqua);
+  --h4: var(--blue);
+  --h5: var(--purple);
+  --h6: var(--fg2);
+
+  --code: var(--bright-orange);
+  --bg-code: var(--bg0-s);
+  --bg-code-mark: var(--bg0);
+
+  --alert-note: var(--blue);
+  --alert-tip: var(--green);
+  --alert-important: var(--purple);
+  --alert-warning: var(--yellow);
+  --alert-caution: var(--red);
+}
+
+html, :root {
+  @include light-colors;
+
+  @media (prefers-color-scheme: dark) {
+    & {
+      @include dark-colors;
+    }
+  }
+}

@@ -1,8 +1,8 @@
 ---
 title: "OTel stuff"
 date: "2025-06-13"
-tags: ["nix", "homelab"]
-
+taxonomies:
+  tags: ["nix", "homelab"]
 draft: true
 ---
 

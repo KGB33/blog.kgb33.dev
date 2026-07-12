@@ -1,0 +1,47 @@
+
+@mixin link-colors($color: var(--root-link), $visited: $color, $hover: $color,) {
+  --link: #{$color};
+  --link-hover: #{$hover};
+  --link-visited: #{$visited};
+}
+
+@mixin link($underline: true) {
+  color: var(--link);
+
+  @if $underline {
+    text-decoration: underline var(--link);
+  } @else {
+    text-decoration: none;
+  }
+
+  &:hover, &:focus {
+    background: var(--link-hover, var(--link));
+    color: var(--bg0) !important;
+
+    @if $underline {
+      text-decoration: underline var(--link-hover);
+    } @else {
+      text-decoration: none;
+    }
+  }
+
+  &:visited {
+    --link: var(--link-visited);
+  }
+}
+
+%link {
+  @include link();
+}
+
+%link-bare {
+  @include link(false);
+}
+
+%link-title-colors {
+  @include link-colors(var(--title-color));
+}
+
+%link-secondary-colors{ 
+  @include link-colors(var(--bright-yellow), $visited: var(--bright-orange));
+}

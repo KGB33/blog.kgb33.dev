@@ -1,8 +1,8 @@
 ---
 title: "Terraforming Proxmox"
 date: "2023-01-12"
-tags: ["terraform", "proxmox", "ansible"]
-
+taxonomies:
+  tags: ["terraform", "proxmox", "ansible"]
 draft: false
 ---
 

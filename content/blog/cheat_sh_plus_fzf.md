@@ -1,8 +1,8 @@
 ---
 title: "Cheat.sh + fzf"
 date: "2022-12-10"
-tags: ["fzf", "cheat.sh", "zsh", "tmux"]
-
+taxonomies:
+  tags: ["fzf", "cheat.sh", "zsh", "tmux"]
 draft: false
 ---
 

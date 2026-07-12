@@ -1,25 +1,30 @@
+{%- import "macros.html" as page_macros -%}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <title>blog.kgb33.dev</title>
-  <link id="styles" rel="stylesheet" type="text/css" href="/styles.css"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" type="text/css" href="/giallo-dark.css" media="(prefers-color-scheme: dark)"/>
+  <link rel="stylesheet" type="text/css" href="/giallo-light.css" media="(prefers-color-scheme: light)"/>
+  <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png"/>
+  <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png"/>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <link rel="manifest" href="/site.webmanifest"/>
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path='rss.xml', trailing_slash=false) }}"/>
+  <link rel="alternate" type="application/atom+xml" title="Atom" href="{{ get_url(path='atom.xml', trailing_slash=false) }}"/>
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
 </head>
 
 <body>
-  <section class="global-header">
-    <a href="/">Home</a>
-    <span class="title">
-        <h1 class="section-header">blog.kgb33.dev</h1>
-    </span>
-    <a href="/">Home</a>
-  </section>
-  <section class="section">
-    <div class="container">
-      {% block content %} {% endblock content %}
-    </div>
-  </section>
+  {%- block titlebar %}
+  {{ page_macros::titlebar(title=config.title, subtitle="home", section="1") }}
+  {%- endblock titlebar %}
+  <main class="page-body">
+    {%- block body %}{% endblock body %}
+  </main>
+  <footer class="page-footer-bar">
+    <a href="/" class="page-footer">Manual page for {{ config.title }}</a>
+  </footer>
 </body>
-
 </html>

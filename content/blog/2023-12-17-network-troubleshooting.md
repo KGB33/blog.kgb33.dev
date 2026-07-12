@@ -1,8 +1,8 @@
 ---
 title: "Troubleshooting Failing Commands"
 date: "2023-12-17"
-tags: [k8s, network, roboshpee]
-
+taxonomies:
+  tags: [k8s, network, roboshpee]
 draft: false
 ---
 

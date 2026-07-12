@@ -1,8 +1,8 @@
 ---
 title: "Packaging Rust programs with Nix"
 date: "2025-06-28"
-tags: ["nix", "rust"]
-
+taxonomies:
+  tags: ["nix", "rust"]
 draft: false
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: "Getting Going with Gitea"
 date: "2022-01-23"
-tags: ["gitea","git","nginx","ssh"]
-
+taxonomies:
+  tags: ["gitea","git","nginx","ssh"]
 draft: false
 ---
 

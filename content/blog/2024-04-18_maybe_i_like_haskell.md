@@ -1,8 +1,8 @@
 ---
 title: "`Maybe` I Like Haskell"
 date: "2024-04-18"
-tags: ["TiL", "haskell", "rust"]
-
+taxonomies:
+  tags: ["TiL", "haskell", "rust"]
 draft: false
 ---
 

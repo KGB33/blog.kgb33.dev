@@ -1,8 +1,8 @@
 ---
 title: "GPG Keys"
 date: "2022-10-28"
-tags: ['git', 'gpg']
-
+taxonomies:
+  tags: ['git', 'gpg']
 draft: false
 ---
 

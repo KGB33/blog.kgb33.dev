@@ -1,0 +1,212 @@
+@import "colors";
+@import "text";
+@import "list";
+@import "command";
+@import "responsive";
+@import "alerts";
+
+body {
+  background: var(--bg0);
+  color: var(--fg0);
+  padding: 0;
+  margin: 0 auto;
+}
+
+a {
+  @extend %link;
+}
+
+p {
+  text-align: justify;
+
+  @media screen and (max-width: $phone-width) {
+    text-align: left;
+  }
+}
+
+%flex-bar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  text-align: center;
+  background: var(--bg0);
+  z-index: 2;
+
+  margin: 0;
+  padding: 0.25em 0;
+}
+
+.page-body {
+  margin: auto;
+  padding: 0em;
+  padding-bottom: 2em;
+  @extend .text-theme;
+}
+
+.page-title-bar {
+  top: 0;
+  justify-content: space-between;
+  position: sticky;
+  @extend %flex-bar;
+}
+
+.page-title {
+  font-size: 1rem;
+  padding: 0em 1em;
+  font-weight: normal;
+  margin: 0;
+
+  a {
+    @extend %link-bare;
+  }
+
+  @extend %link-title-colors;
+}
+
+.page-subtitle {
+  @extend .page-title;
+  color: var(--gray);
+}
+
+.page-footer-bar {
+  background: var(--h3);
+  bottom: 0px;
+  position: fixed;
+
+  .page-footer {
+    display: block;
+    color: var(--bg);
+    padding: 0 1em;
+    text-decoration: none;
+
+    &:hover, &:focus {
+      color: var(--bg) !important;
+      background: inherit;
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: var(--bg);
+    }
+  }
+}
+
+.section-title {
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--section);
+  background: var(--section-bg);
+  padding-left: $min-indent;
+  margin: 0;
+
+  &:first-child {
+    margin-top: $vertical-spacing;
+  }
+}
+
+.section-body {
+  padding: 0 $indent;
+  margin: 0;
+  margin-top: calc($vertical-spacing / 2);
+  margin-bottom: $vertical-spacing;
+
+  .section-title {
+    color: var(--section);
+    background: var(--section-bg);
+  }
+}
+
+a.url {
+  word-break: break-all;
+}
+
+.article-title {
+  margin: 0;
+  margin-bottom: $vertical-spacing;
+  display: inline;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.article-description {
+  margin: 0;
+  margin-bottom: $vertical-spacing;
+  display: inline;
+
+  &::before {
+    content: "—";
+    margin-right: 0.5em;
+  }
+}
+
+.indicator {
+  color: var(--gray);
+}
+
+.search-body {
+  margin-top: $vertical-spacing;
+}
+
+p.sh-cmd {
+  margin: 0;
+
+  .prompt {
+    color: var(--gray);
+  }
+
+  .prog {
+    font-weight: bold;
+    color: var(--fg0);
+  }
+
+  .opt {
+    color: var(--fg3);
+  }
+}
+
+.tree {
+  .tree-dir {
+    font-weight: bold;
+    color: var(--fg0);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li::before {
+      content: "├── ";
+      color: var(--gray);
+      white-space: pre;
+    }
+
+    li:last-child::before {
+      content: "└── ";
+    }
+  }
+}
+
+.search {
+  // Keep the "man -k" prompt and input on one line, even on narrow screens.
+  flex-direction: row;
+
+  + #search-results {
+    margin-top: $vertical-spacing;
+  }
+
+  input[type="search"] {
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--fg0);
+    background: var(--bg-code);
+    border: 1px solid var(--bg2);
+    padding: 0 0.5em;
+    flex: 1;
+
+    &:focus {
+      outline: 1px solid var(--title-color);
+    }
+  }
+}

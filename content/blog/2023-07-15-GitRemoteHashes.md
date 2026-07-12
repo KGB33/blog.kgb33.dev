@@ -1,8 +1,8 @@
 ---
 title: "TiL..About `git` remotes"
 date: "2023-07-15"
-tags: ["TiL", "nixos"]
-
+taxonomies:
+  tags: ["TiL", "nixos"]
 draft: false
 ---
 

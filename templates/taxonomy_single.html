@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}{{ term.name }} posts ~ {{ config.title }}{% endblock title %}
+
+{% block titlebar %}
+{{ page_macros::titlebar(title=config.title, subtitle="tags", section="7") }}
+{% endblock titlebar %}
+
+{% block body %}
+{{ page_macros::listing(title="Tags", pages=term.pages, exclude_tags=term.name) }}
+{% endblock body %}

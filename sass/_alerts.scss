@@ -1,0 +1,52 @@
+/// Styling for Zola's github_alerts output:
+/// <blockquote class="markdown-alert-note"><p>...</p></blockquote>
+
+@import "spacing";
+
+.md {
+  [class^="markdown-alert"] {
+    margin: 0;
+    margin-left: $block-indent;
+    margin-bottom: $vertical-spacing;
+    padding: 0.5em 1em;
+    border-left: 2px solid var(--alert-color, var(--gray));
+    background: var(--bg-code);
+    color: var(--fg1);
+
+    &::before {
+      display: block;
+      font-weight: bold;
+      color: var(--alert-color, var(--gray));
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .markdown-alert-note {
+    --alert-color: var(--alert-note);
+    &::before { content: "NOTE"; }
+  }
+
+  .markdown-alert-tip {
+    --alert-color: var(--alert-tip);
+    &::before { content: "TIP"; }
+  }
+
+  .markdown-alert-important {
+    --alert-color: var(--alert-important);
+    &::before { content: "IMPORTANT"; }
+  }
+
+  .markdown-alert-warning {
+    --alert-color: var(--alert-warning);
+    &::before { content: "WARNING"; }
+  }
+
+  .markdown-alert-caution {
+    --alert-color: var(--alert-caution);
+    &::before { content: "CAUTION"; }
+  }
+}

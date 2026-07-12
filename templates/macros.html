@@ -1,0 +1,85 @@
+{% macro titlebar(title="", subtitle="", section="7") -%}
+<header class="page-title-bar">
+{%- if subtitle %}
+<h1 class="page-subtitle">{{ subtitle }}({{ section }})</h1>
+{%- else %}
+<span class="page-subtitle"></span>
+{%- endif %}
+{%- if title %}
+<span class="page-title">
+  <a href="{{ config.base_url }}" aria-label="homepage">
+    {{ title }}
+  </a>
+</span>
+{%- else %}
+<span class="page-title"></span>
+{%- endif %}
+{%- if subtitle and title %}
+<span class="page-subtitle">{{ subtitle }}({{ section }})</span>
+{%- else %}
+<span class="page-subtitle"></span>
+{%- endif %}
+</header>
+{%- endmacro titlebar %}
+
+{% macro listing_header(page, exclude_tags="") %}
+<dt class="command hl-header">
+  <a class="prog" href="{{ page.permalink | safe }}">
+    {{ page.title }}
+  </a>
+  {%- if page.date %}
+  <time class="opt">{{ page.date | date(format="%Y-%m-%d") }}</time>
+  {%- endif %}
+  {%- if page.taxonomies.tags %}
+  {%- set_global matched = [] %}
+  {%- set_global rest = [] %}
+  {%- for tag in page.taxonomies.tags %}
+    {%- if exclude_tags and tag | lower == exclude_tags | lower %}
+      {%- set_global matched = matched | concat(with=tag) %}
+    {%- else %}
+      {%- set_global rest = rest | concat(with=tag) %}
+    {%- endif %}
+  {%- endfor %}
+  {%- if matched or rest %}
+  <span>
+    <span class="label">tags</span>
+    {%- if matched %}
+    <ul class="opt" aria-label="matched tags">
+    {%- for tag in matched %}
+      <li><a class="opt" href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}">{{ tag | lower }}</a></li>
+    {%- endfor %}
+    </ul>
+    {%- endif %}
+    {%- if matched and rest %}
+    <span class="tag-op">++</span>
+    {%- endif %}
+    {%- if rest %}
+    <ul class="opt" aria-label="other tags">
+    {%- for tag in rest %}
+      <li><a class="opt" href="{{ get_taxonomy_url(kind='tags', name=tag) | safe }}">{{ tag | lower }}</a></li>
+    {%- endfor %}
+    </ul>
+    {%- endif %}
+  </span>
+  {%- endif %}
+  {%- endif %}
+</dt>
+{% endmacro listing_header %}
+
+{% macro listing(title, pages, exclude_tags="") %}
+<section>
+  <h2 class="section-title">{{ title }}</h2>
+  <div class="section-body">
+    <dl class="hl">
+    {%- for page in pages %}
+      {{ self::listing_header(page=page, exclude_tags=exclude_tags) }}
+      {%- if page.description %}
+      <dd class="hl-body">
+        {{ page.description | safe }}
+      </dd>
+      {%- endif %}
+    {% endfor -%}
+    </dl>
+  </div>
+</section>
+{% endmacro listing %}

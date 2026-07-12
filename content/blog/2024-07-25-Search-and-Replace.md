@@ -1,8 +1,8 @@
 ---
 title: "Regex Capture Groups: Restructure text using NeoVim"
 date: "2024-07-25"
-tags: ["neovim", "regex"]
-
+taxonomies:
+  tags: ["neovim", "regex"]
 draft: false
 ---
 

@@ -1,0 +1,37 @@
+@import "spacing";
+
+@mixin header-list(
+  $header-class,
+  $body-class,
+  $item-indent: $indent,
+  $list-spacing: $vertical-spacing,
+) {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  .#{$header-class} {
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+
+    &:not(:first-child) {
+      margin-top: calc($list-spacing / 2);
+    }
+
+    > .prog {
+      flex-basis: 100%;
+    }
+  }
+
+  .#{$body-class} {
+    display: block;
+    margin: 0;
+    margin-bottom: $list-spacing;
+    padding-left: $item-indent;
+  }
+}
+
+.hl {
+  @include header-list(hl-header, hl-body);
+}

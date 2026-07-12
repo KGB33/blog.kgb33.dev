@@ -1,8 +1,8 @@
 ---
 title: "Ansible for Localhost"
 date: "2022-02-03"
-tags: ["ansible", "arch-linux"]
-
+taxonomies:
+  tags: ["ansible", "arch-linux"]
 draft: false
 ---
 Ansible is a super powerful system configuration tool that is normally

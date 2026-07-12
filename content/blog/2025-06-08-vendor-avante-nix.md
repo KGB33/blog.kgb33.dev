@@ -1,8 +1,8 @@
 ---
 title: "Avante.nvim + Home-Manager"
 date: "2025-06-08"
-tags: ["nix", "nvim"]
-
+taxonomies:
+  tags: ["nix", "nvim"]
 draft: false
 ---
 

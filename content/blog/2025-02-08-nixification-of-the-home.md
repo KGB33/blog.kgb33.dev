@@ -1,8 +1,8 @@
 ---
 title: "Nix Tricks"
 date: "2025-02-05"
-tags: ["nixos", "nix", "homelab", "proxmox"]
-
+taxonomies:
+  tags: ["nixos", "nix", "homelab", "proxmox"]
 draft: false
 ---
 

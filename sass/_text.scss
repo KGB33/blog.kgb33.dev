@@ -1,0 +1,361 @@
+@import "responsive";
+@import "link";
+@import "spacing";
+
+@font-face {
+  font-family: FiraCode;
+  font-weight: normal;
+  font-style: normal;
+  src: url("fonts/FiraCode-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: FiraCode;
+  font-weight: bold;
+  font-style: normal;
+  src: url("fonts/FiraCode-Bold.woff2") format("woff2");
+}
+
+$box-color: var(--bg2);
+$box-border: 1px solid $box-color;
+
+html {
+  font-family: FiraCode, monospace;
+  font-size: medium;
+
+  @media screen and (max-width: $phone-width) {
+    font-size: 13px;
+  }
+}
+
+.text-theme {
+  font-size: 1rem;
+
+  p {
+    margin: 0;
+    margin-bottom: $vertical-spacing;
+
+    &:last-child {
+      margin-bottom: 0em;
+    }
+  }
+}
+
+%container {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.md {
+  @extend .text-theme;
+
+  @mixin indented($important: false) {
+    display: block;
+
+    padding-right: $indent;
+    @if $important {
+      padding-left: $block-indent !important;
+    } @else {
+      padding-left: $block-indent;
+    }
+  }
+
+  %indented {
+    @include indented;
+  }
+
+  %heading {
+    font-size: 1em;
+    text-transform: uppercase;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    @extend %indented;
+  }
+
+  h1, h2 {
+    font-weight: bold;
+    color: var(--section);
+    background: var(--section-bg);
+    padding-left: $min-indent;
+
+    &:first-child {
+      margin-top: $vertical-spacing;
+    }
+    @extend %heading;
+  }
+
+  h3 {
+    color: var(--h3);
+    @extend %heading;
+  }
+
+  h1, h2, h3 {
+    code {
+      color: inherit !important;
+      background: inherit !important;
+      text-transform: none;
+    }
+  }
+
+  h4 {
+    color: var(--h4);
+    @extend %heading;
+  }
+
+  h5 {
+    color: var(--h5);
+    @extend %heading;
+  }
+
+  h6 {
+    color: var(--h6);
+    @extend %heading;
+  }
+
+  p {
+    @extend %indented;
+  }
+
+  a {
+    code {
+      font-size: 1em;
+      text-wrap: nowrap;
+    }
+
+    &:hover {
+      code {
+        color: var(--bg0);
+      }
+    }
+
+    @extend %link;
+  }
+
+  s, del {
+    text-decoration-color: var(--fg3);
+  }
+
+  %list {
+    position: relative;
+    display: block;
+    list-style: none;
+    padding-right: 1em;
+    margin: 0;
+    margin-bottom: 1em;
+
+    li {
+      padding-left: $indent;
+      position: relative;
+
+      &:before {
+        color: var(--gray);
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        text-align: right;
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+
+    // Nested lists: the li already provides one $indent step,
+    // and only the outermost list should carry the block margin.
+    ul, ol {
+      padding-left: 0;
+      padding-right: 0;
+      margin-bottom: 0;
+    }
+
+    @extend %indented;
+  }
+
+  ol {
+    counter-reset: ol;
+    & > li:before {
+      content: counter(ol);
+      counter-increment: ol;
+    }
+
+    @extend %list;
+  }
+
+  ul {
+    & > li:before {
+      content: '—';
+    }
+
+    @extend %list;
+  }
+
+  blockquote {
+    color: var(--fg2);
+    margin: 1em;
+    padding: 0;
+  }
+
+  q, quote {
+    color: var(--fg1);
+    &::before, &::after {
+      color: var(--gray);
+      content: "\"";
+    }
+  }
+
+  mark {
+    color: inherit;
+    background: inherit;
+    text-decoration: underline wavy var(--bg3);
+    text-decoration-skip: leading-spaces trailing-spaces;
+  }
+
+  code {
+    font-style: normal;
+    color: var(--fg1);
+  }
+
+  :not(pre) > code {
+    font-size: inherit !important;
+    color: var(--code);
+    word-wrap: break-word;
+  }
+
+  pre {
+    line-height: 1em;
+    color: var(--fg1);
+    background-color: var(--bg-code);
+    font-size: 1rem;
+    margin: 0;
+    margin-bottom: 1rem;
+
+    code {
+      margin: 0;
+      padding: 1rem $block-indent;
+      font-size: 0.85rem;
+      display: block;
+      overflow-y: hidden;
+      overflow-x: auto;
+      background: var(--bg-code);
+
+      // The generated giallo-*.css italicizes broadly (including a bare
+      // .z-punctuation rule) and can't be edited; !important is needed to
+      // beat its compound .z-* selectors.
+      span {
+        font-style: normal !important;
+      }
+
+      .z-comment {
+        font-style: italic !important;
+      }
+
+      mark {
+        text-decoration: none;
+        background-color: var(--bg-code-mark);
+      }
+
+      table {
+        display: table;
+        margin: 0;
+        padding: 0;
+
+        &, th, td {
+          border: none;
+          padding: 0;
+          font-size: 1em;
+        }
+
+        td:first-child {
+          color: var(--gray);
+          background: var(--bg-code);
+          min-width: $indent;
+          user-select: none;
+
+          mark {
+            font-weight: bold;
+            background: none;
+          }
+        }
+      }
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    font-size: 1em;
+    table-layout: fixed;
+    padding-right: 0em;
+    margin: 1em 0;
+    max-width: fit-content;
+    overflow-x: auto;
+
+    @extend %indented;
+  }
+
+  th {
+    border: $box-border;
+    padding: 1em;
+  }
+
+  td {
+    padding-left: 1em;
+    padding-right: 1em;
+    border: $box-border;
+  }
+
+  .text-indent {
+    --block-indent: calc(2* var(--indent));
+    margin-bottom: $vertical-spacing;
+  }
+
+  .hl {
+    li {
+      &::before {
+        content: none;
+      }
+    }
+
+    @extend .hl;
+    @include indented(true);
+  }
+
+  details {
+    margin: 0;
+    margin-bottom: $vertical-spacing;
+    padding: 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    p, pre, ul, ol, dl {
+      @extend .text-indent;
+    }
+
+    summary {
+      cursor: pointer;
+      &::marker {
+        content: "";
+      }
+
+      & :first-child::after {
+        content: " *";
+      }
+    }
+  }
+
+  details[open] {
+    summary {
+      margin-bottom: $vertical-spacing;
+      display: inline-block;
+
+      & :first-child::after {
+        content: " -";
+      }
+    }
+  }
+
+}

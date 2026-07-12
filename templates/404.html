@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}No manual entry ~ {{ config.title }}{% endblock title %}
+
+{% block titlebar %}
+{{ page_macros::titlebar(title=config.title, subtitle="http 404", section="7") }}
+{% endblock titlebar %}
+
+{% block body %}
+<section>
+  <h2 class="section-title">Name</h2>
+  <div class="section-body">
+    <h1 class="article-title">404</h1>
+    <p class="article-description">No manual entry for <span id="req-path">the requested page</span></p>
+  </div>
+</section>
+
+<section class="md">
+  <h2>Description</h2>
+  <p>
+    TODO: Write me
+  </p>
+  <h2>See Also</h2>
+  <p>
+    <a href="/">home(1)</a>,
+    <a href="{{ get_url(path='@/blog/_index.md') }}">posts(7)</a>,
+    <a href="{{ get_url(path='tags') }}">tags(7)</a>
+  </p>
+</section>
+
+<script>
+  document.getElementById("req-path").textContent = window.location.pathname;
+</script>
+{% endblock body %}

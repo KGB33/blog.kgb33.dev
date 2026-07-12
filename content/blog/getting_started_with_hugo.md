@@ -2,7 +2,8 @@
 title: "Deploying `blog.kgb33.dev`"
 description: "Hugo quick-start"
 date: "2021-12-17"
-tags: ["hugo", "nginx", "letsEncrypt", "CI/CD", "githubActions", "npm"]
+taxonomies:
+  tags: ["hugo", "nginx", "letsEncrypt", "CI/CD", "githubActions", "npm"]
 ---
 
 This post will mostly mirror Hugo's [quickstart guide][hugo-qs]. With a few differences:

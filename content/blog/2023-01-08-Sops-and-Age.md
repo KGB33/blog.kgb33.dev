@@ -1,8 +1,8 @@
 ---
 title: "Sops and Age"
 date: "2023-01-08"
-tags: ["TiL", "sops", "age"]
-
+taxonomies:
+  tags: ["TiL", "sops", "age"]
 draft: false
 ---
 <!--more-->

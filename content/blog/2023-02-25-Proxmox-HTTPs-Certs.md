@@ -1,8 +1,8 @@
 ---
 title: "Proxmox HTTPs Certificates"
 date: "2023-01-25"
-tags: ["TiL", "Proxmox", "LetsEncrypt", "ACME", "DNS"]
-
+taxonomies:
+  tags: ["TiL", "Proxmox", "LetsEncrypt", "ACME", "DNS"]
 draft: false
 ---
 Ordering LetsEncrypt certificates for your Proxmox servers is almost too easy,

@@ -1,8 +1,8 @@
 ---
 title: "Gitting There on Argos"
 date: "2023-04-10"
-tags: ["ArgoCD", "k8s", "GitOps"]
-
+taxonomies:
+  tags: ["ArgoCD", "k8s", "GitOps"]
 draft: false
 ---
 
