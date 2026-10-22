@@ -32,11 +32,11 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: gunzip -c /tmp/dagger-engine.tar.gz | docker load
       - name: Install Dagger CLI
-        run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.20.8 sh; cd -; }
+        run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh; cd -; }
       - name: Run Dagger pipeline
         run: dagger call publish --token env://GITHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
       - name: Cache dagger engine
-        run: docker save registry.dagger.io/engine:v0.20.8 | gzip > /tmp/dagger-engine.tar.gz
+        run: docker save registry.dagger.io/engine:v0.21.11 | gzip > /tmp/dagger-engine.tar.gz
