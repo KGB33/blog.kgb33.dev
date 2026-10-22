@@ -22,6 +22,15 @@ jobs:
         with:
           lfs: true
           fetch-depth: 0
+      - name: Cache engine image
+        id: engine-image-cache
+        uses: actions/cache@v5
+        with:
+          path: /tmp/dagger-engine.tar
+          key: dagger-engine-${{ runner.os }}-${{ runner.arch }}-${{ env.DAGGER_VERSION }}
+      - name: Load cached engine image
+        if: steps.engine-image-cache.outputs.cache-hit == 'true'
+        run: docker image load --input /tmp/dagger-engine.tar
       - uses: actions/cache@v5
         with:
           path: /tmp/dagger-state.tar
@@ -44,6 +53,9 @@ jobs:
           DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
           _EXPERIMENTAL_DAGGER_RUNNER_HOST: "docker-image://registry.dagger.io/engine:v${{ env.DAGGER_VERSION }}?container=dagger-engine-ci&volume=dagger-state"
         run: dagger call publish --token env://GITHUB_TOKEN
+      - name: Save engine image
+        if: steps.engine-image-cache.outputs.cache-hit != 'true'
+        run: docker image save --output /tmp/dagger-engine.tar "registry.dagger.io/engine:v${DAGGER_VERSION}"
       - name: Snapshot engine volume
         run: |
           docker stop --time 60 dagger-engine-ci
