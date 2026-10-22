@@ -1,6 +1,5 @@
 name: "Build & Push Container Image"
 
-# Only a single job with this concurrency can run at any given time
 concurrency: release
 
 on:
@@ -9,34 +8,44 @@ on:
     branches:
       - 'main'
 permissions:
+  contents: read
   packages: write
   actions: write
 jobs:
   publish:
     name: "Build & Push to GHCR"
     runs-on: ubuntu-latest
+    env:
+      DAGGER_VERSION: "0.21.11"
     steps:
-      - name: "Check out"
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v6
         with:
           lfs: true
           fetch-depth: 0
-      - name: Restore container cache
-        id: cache
-        uses: actions/cache@v5
+      - uses: actions/cache@v5
         with:
-          path: /tmp/dagger-engine.tar.gz
-          key: dagger-engine-${{ hashFiles('dagger.json') }}
-          restore-keys: dagger-engine-
-      - name: Load cached image
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: gunzip -c /tmp/dagger-engine.tar.gz | docker load
+          path: /tmp/dagger-state.tar
+          key: dagger-state-${{ env.DAGGER_VERSION }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: dagger-state-${{ env.DAGGER_VERSION }}-
+      - name: Restore engine volume
+        run: |
+          docker volume create dagger-state
+          if [ -f /tmp/dagger-state.tar ]; then
+            volume=$(docker volume inspect --format '{{.Mountpoint}}' dagger-state)
+            sudo tar --extract --file /tmp/dagger-state.tar --directory "$volume" --numeric-owner --same-owner --same-permissions --xattrs '--xattrs-include=*' --acls
+          fi
       - name: Install Dagger CLI
-        run: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh; cd -; }
+        run: |
+          cd /usr/local
+          curl -fsSL https://dl.dagger.io/dagger/install.sh | sh
       - name: Run Dagger pipeline
-        run: dagger call publish --token env://GITHUB_TOKEN
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
-      - name: Cache dagger engine
-        run: docker save registry.dagger.io/engine:v0.21.11 | gzip > /tmp/dagger-engine.tar.gz
+          _EXPERIMENTAL_DAGGER_RUNNER_HOST: "docker-image://registry.dagger.io/engine:v${{ env.DAGGER_VERSION }}?container=dagger-engine-ci&volume=dagger-state"
+        run: dagger call publish --token env://GITHUB_TOKEN
+      - name: Snapshot engine volume
+        run: |
+          docker stop --time 60 dagger-engine-ci
+          volume=$(docker volume inspect --format '{{.Mountpoint}}' dagger-state)
+          sudo tar --create --file /tmp/dagger-state.tar --directory "$volume" --numeric-owner --xattrs '--xattrs-include=*' --acls --sparse .
