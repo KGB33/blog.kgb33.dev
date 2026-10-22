@@ -48,4 +48,5 @@ jobs:
         run: |
           docker stop --time 60 dagger-engine-ci
           volume=$(docker volume inspect --format '{{.Mountpoint}}' dagger-state)
-          sudo tar --create --file /tmp/dagger-state.tar --directory "$volume" --numeric-owner --xattrs '--xattrs-include=*' --acls --sparse .
+          # Let the runner open its restored archive; root cannot overwrite it in sticky /tmp.
+          sudo tar --create --file - --directory "$volume" --numeric-owner --xattrs '--xattrs-include=*' --acls --sparse . > /tmp/dagger-state.tar
