@@ -22,43 +22,16 @@ jobs:
         with:
           lfs: true
           fetch-depth: 0
-      - name: Cache engine image
-        id: engine-image-cache
-        uses: actions/cache@v5
+      - name: Setup Dagger
+        id: dagger
+        uses: ./.github/actions/setup-dagger
         with:
-          path: /tmp/dagger-engine.tar
-          key: dagger-engine-${{ runner.os }}-${{ runner.arch }}-${{ env.DAGGER_VERSION }}
-      - name: Load cached engine image
-        if: steps.engine-image-cache.outputs.cache-hit == 'true'
-        run: docker image load --input /tmp/dagger-engine.tar
-      - uses: actions/cache@v5
-        with:
-          path: /tmp/dagger-state.tar
-          key: dagger-state-${{ env.DAGGER_VERSION }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: dagger-state-${{ env.DAGGER_VERSION }}-
-      - name: Restore engine volume
-        run: |
-          docker volume create dagger-state
-          if [ -f /tmp/dagger-state.tar ]; then
-            volume=$(docker volume inspect --format '{{.Mountpoint}}' dagger-state)
-            sudo tar --extract --file /tmp/dagger-state.tar --directory "$volume" --numeric-owner --same-owner --same-permissions --xattrs '--xattrs-include=*' --acls
-          fi
-      - name: Install Dagger CLI
-        run: |
-          cd /usr/local
-          curl -fsSL https://dl.dagger.io/dagger/install.sh | sh
+          version: ${{ env.DAGGER_VERSION }}
       - name: Run Dagger pipeline
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
-          _EXPERIMENTAL_DAGGER_RUNNER_HOST: "docker-image://registry.dagger.io/engine:v${{ env.DAGGER_VERSION }}?container=dagger-engine-ci&volume=dagger-state"
+          _EXPERIMENTAL_DAGGER_RUNNER_HOST: ${{ steps.dagger.outputs.runner-host }}
         run: dagger call publish --token env://GITHUB_TOKEN
-      - name: Save engine image
-        if: steps.engine-image-cache.outputs.cache-hit != 'true'
-        run: docker image save --output /tmp/dagger-engine.tar "registry.dagger.io/engine:v${DAGGER_VERSION}"
-      - name: Snapshot engine volume
-        run: |
-          docker stop --time 60 dagger-engine-ci
-          volume=$(docker volume inspect --format '{{.Mountpoint}}' dagger-state)
-          # Let the runner open its restored archive; root cannot overwrite it in sticky /tmp.
-          sudo tar --create --file - --directory "$volume" --numeric-owner --xattrs '--xattrs-include=*' --acls --sparse . > /tmp/dagger-state.tar
+      - name: Snapshot Dagger
+        uses: ./.github/actions/snapshot-dagger
