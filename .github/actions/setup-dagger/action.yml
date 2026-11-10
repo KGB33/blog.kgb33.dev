@@ -1,0 +1,52 @@
+name: Setup Dagger
+description: Install Dagger and restore its engine image and build cache on an Ubuntu runner.
+inputs:
+  version:
+    description: Dagger version without the v prefix.
+    required: true
+outputs:
+  runner-host:
+    description: Runner URL to pass as _EXPERIMENTAL_DAGGER_RUNNER_HOST when invoking Dagger.
+    value: docker-image://registry.dagger.io/engine:v${{ inputs.version }}?container=dagger-engine-ci&volume=dagger-state
+runs:
+  using: composite
+  steps:
+    - name: Cache engine image
+      id: engine-image-cache
+      uses: actions/cache@v5
+      with:
+        path: /tmp/dagger-engine.tar
+        key: dagger-engine-${{ runner.os }}-${{ runner.arch }}-${{ inputs.version }}
+    - name: Load cached engine image
+      if: steps.engine-image-cache.outputs.cache-hit == 'true'
+      shell: bash
+      run: docker image load --input /tmp/dagger-engine.tar
+    - name: Pull and archive engine image
+      if: steps.engine-image-cache.outputs.cache-hit != 'true'
+      shell: bash
+      env:
+        DAGGER_VERSION: ${{ inputs.version }}
+      run: |
+        docker pull "registry.dagger.io/engine:v${DAGGER_VERSION}"
+        docker image save --output /tmp/dagger-engine.tar "registry.dagger.io/engine:v${DAGGER_VERSION}"
+    - name: Cache engine state
+      uses: actions/cache@v5
+      with:
+        path: /tmp/dagger-state.tar
+        key: dagger-state-${{ inputs.version }}-${{ github.run_id }}-${{ github.run_attempt }}
+        restore-keys: dagger-state-${{ inputs.version }}-
+    - name: Restore engine volume
+      shell: bash
+      run: |
+        docker volume create dagger-state
+        if [ -f /tmp/dagger-state.tar ]; then
+          volume=$(docker volume inspect --format '{{.Mountpoint}}' dagger-state)
+          sudo tar --extract --file /tmp/dagger-state.tar --directory "$volume" --numeric-owner --same-owner --same-permissions --xattrs '--xattrs-include=*' --acls
+        fi
+    - name: Install Dagger CLI
+      shell: bash
+      env:
+        DAGGER_VERSION: ${{ inputs.version }}
+      run: |
+        cd /usr/local
+        curl -fsSL https://dl.dagger.io/dagger/install.sh | sh

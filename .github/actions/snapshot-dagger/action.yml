@@ -1,0 +1,12 @@
+name: Snapshot Dagger
+description: Stop the engine created by setup-dagger and archive its state for the end-of-job cache save.
+runs:
+  using: composite
+  steps:
+    - name: Snapshot engine volume
+      shell: bash
+      run: |
+        docker stop --time 60 dagger-engine-ci
+        volume=$(docker volume inspect --format '{{.Mountpoint}}' dagger-state)
+        # Let the runner open its restored archive; root cannot overwrite it in sticky /tmp.
+        sudo tar --create --file - --directory "$volume" --numeric-owner --xattrs '--xattrs-include=*' --acls --sparse . > /tmp/dagger-state.tar
